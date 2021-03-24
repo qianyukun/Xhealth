@@ -13,7 +13,7 @@ class SandTableRoute extends StatefulWidget {
 }
 
 class _SandTableRouteState extends State<SandTableRoute> {
-  int? moodCheckId;
+  int moodCheckId;
 
   @override
   Widget build(BuildContext context) {

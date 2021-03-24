@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:health/common/EventConstants.dart';
+import 'package:health/report/ReportUtil.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:health/extension/ScreenExtension.dart';
 
@@ -57,24 +59,23 @@ class AudioController extends StatelessWidget {
             if (processingState == ProcessingState.loading ||
                 processingState == ProcessingState.buffering) {
               return
-                // Container(
-                // margin: EdgeInsets.all(8.0.pt),
-                // width: 104.0.pt,
-                // height: 104.0.pt,
-                // child: CircularProgressIndicator(),
-              // );
+                  // Container(
+                  // margin: EdgeInsets.all(8.0.pt),
+                  // width: 104.0.pt,
+                  // height: 104.0.pt,
+                  // child: CircularProgressIndicator(),
+                  // );
 
-              IconButton(
+                  IconButton(
                 icon: Image.asset("imgs/sound/bt_pause_normal.png"),
                 iconSize: 104.0.pt,
-                onPressed: (){
-                },
+                onPressed: () {},
               );
             } else if (playing != true) {
               return IconButton(
                 icon: Image.asset("imgs/sound/bt_play_normal.png"),
                 iconSize: 104.0.pt,
-                onPressed: (){
+                onPressed: () {
                   player.play();
                 },
               );
@@ -82,7 +83,9 @@ class AudioController extends StatelessWidget {
               return IconButton(
                 icon: Image.asset("imgs/sound/bt_pause_normal.png"),
                 iconSize: 104.0.pt,
-                onPressed: (){
+                onPressed: () {
+                  ReportUtil.getInstance()
+                      .trackEvent(eventName: EventConstants.sounds_pause);
                   player.pause();
                 },
               );

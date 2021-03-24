@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:health/common/EventConstants.dart';
 import 'package:health/db/DbHelper.dart';
+import 'package:health/report/ReportUtil.dart';
 import 'package:health/res/strings/CustomLocalizationsDelegates.dart';
 import 'package:health/res/strings/StringLocalizations.dart';
 import 'package:health/routes/breath/BreathRoute.dart';
@@ -19,6 +21,7 @@ import 'sandTable/SandTableRoute.dart';
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    ReportUtil.getInstance().trackEvent(eventName: EventConstants.app_enter);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -26,6 +29,9 @@ class App extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        navigatorObservers: [
+          ReportUtil.getInstance().firebaseAnalyticsObserver
+        ],
         localizationsDelegates: [
           // 本地化的代理类
           GlobalMaterialLocalizations.delegate,

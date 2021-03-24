@@ -4,13 +4,13 @@ class SeekBar extends StatefulWidget {
   final Duration duration;
   final Duration position;
   final Duration bufferedPosition;
-  final ValueChanged<Duration>? onChanged;
-  final ValueChanged<Duration>? onChangeEnd;
+  final ValueChanged<Duration> onChanged;
+  final ValueChanged<Duration> onChangeEnd;
 
   SeekBar({
-    required this.duration,
-    required this.position,
-    required this.bufferedPosition,
+    @required this.duration,
+    @required this.position,
+    @required this.bufferedPosition,
     this.onChanged,
     this.onChangeEnd,
   });
@@ -131,16 +131,16 @@ class HiddenThumbComponentShape extends SliderComponentShape {
   void paint(
     PaintingContext context,
     Offset center, {
-    required Animation<double> activationAnimation,
-    required Animation<double> enableAnimation,
-    required bool isDiscrete,
-    required TextPainter labelPainter,
-    required RenderBox parentBox,
-    required SliderThemeData sliderTheme,
-    required TextDirection textDirection,
-    required double value,
-    required double textScaleFactor,
-    required Size sizeWithOverflow,
+    @required Animation<double> activationAnimation,
+    @required Animation<double> enableAnimation,
+    @required bool isDiscrete,
+    @required TextPainter labelPainter,
+    @required RenderBox parentBox,
+    @required SliderThemeData sliderTheme,
+    @required TextDirection textDirection,
+    @required double value,
+    @required double textScaleFactor,
+    @required Size sizeWithOverflow,
   }) {}
 }
 
@@ -153,11 +153,11 @@ class MyRoundedRectSliderTrackShape extends SliderTrackShape
   void paint(
     PaintingContext context,
     Offset offset, {
-    required RenderBox parentBox,
-    required SliderThemeData sliderTheme,
-    required Animation<double> enableAnimation,
-    required TextDirection textDirection,
-    required Offset thumbCenter,
+    @required RenderBox parentBox,
+    @required SliderThemeData sliderTheme,
+    @required Animation<double> enableAnimation,
+    @required TextDirection textDirection,
+    @required Offset thumbCenter,
     bool isDiscrete = false,
     bool isEnabled = false,
     double additionalActiveTrackHeight = 0,
@@ -177,7 +177,7 @@ class MyRoundedRectSliderTrackShape extends SliderTrackShape
     // If the slider [SliderThemeData.trackHeight] is less than or equal to 0,
     // then it makes no difference whether the track is painted or not,
     // therefore the painting  can be a no-op.
-    if (sliderTheme.trackHeight == null || sliderTheme.trackHeight! <= 0) {
+    if (sliderTheme.trackHeight == null || sliderTheme.trackHeight <= 0) {
       return;
     }
 
@@ -190,11 +190,11 @@ class MyRoundedRectSliderTrackShape extends SliderTrackShape
         begin: sliderTheme.disabledInactiveTrackColor,
         end: sliderTheme.inactiveTrackColor);
     final Paint activePaint = Paint()
-      ..color = activeTrackColorTween.evaluate(enableAnimation)!;
+      ..color = activeTrackColorTween.evaluate(enableAnimation);
     final Paint inactivePaint = Paint()
-      ..color = inactiveTrackColorTween.evaluate(enableAnimation)!;
-    final Paint leftTrackPaint;
-    final Paint rightTrackPaint;
+      ..color = inactiveTrackColorTween.evaluate(enableAnimation);
+    Paint leftTrackPaint;
+    Paint rightTrackPaint;
     switch (textDirection) {
       case TextDirection.ltr:
         leftTrackPaint = activePaint;

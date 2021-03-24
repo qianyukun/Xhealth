@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:health/common/EventConstants.dart';
 import 'package:health/common/Global.dart';
+import 'package:health/report/ReportUtil.dart';
 
 import 'SelfAssessmentRoute.dart';
 import 'package:health/extension/ScreenExtension.dart';
@@ -8,7 +10,7 @@ class AssessmentEnterName extends StatefulWidget {
   static final nickName = "nick_name";
   final OnFinishCurrentPage onFinishEnterName;
 
-  AssessmentEnterName({Key? key, required this.onFinishEnterName})
+  AssessmentEnterName({Key key, @required this.onFinishEnterName})
       : super(key: key);
 
   @override
@@ -110,6 +112,7 @@ class _AssessmentEnterName extends State<AssessmentEnterName> {
 
   onNext() async {
     if (checkNickName()) {
+      ReportUtil.getInstance().trackEvent(eventName: EventConstants.nickname_next);
       Global.getPref().setStorage(
           AssessmentEnterName.nickName, nickNameController.text.trim());
       widget.onFinishEnterName();

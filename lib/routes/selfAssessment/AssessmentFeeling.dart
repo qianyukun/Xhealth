@@ -1,6 +1,8 @@
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
+import 'package:health/common/EventConstants.dart';
 import 'package:health/common/FeelingUtil.dart';
+import 'package:health/report/ReportUtil.dart';
 import 'package:health/routes/selfAssessment/Feeling.dart';
 
 import 'SelfAssessmentRoute.dart';
@@ -8,10 +10,10 @@ import 'package:health/extension/ScreenExtension.dart';
 
 class AssessmentFeeling extends StatefulWidget {
   final OnFinishSelectFeeling onFinishSelectedFeelings;
-  Feeling? feeling;
+  Feeling feeling;
 
   AssessmentFeeling(
-      {Key? key, required this.onFinishSelectedFeelings, this.feeling})
+      {Key key, @required this.onFinishSelectedFeelings, this.feeling})
       : super(key: key);
 
   @override
@@ -23,7 +25,7 @@ class AssessmentFeeling extends StatefulWidget {
 class _AssessmentFeeling extends State<AssessmentFeeling> {
   List<Feeling> feelings = [];
   int selectedPosition = -1;
-  Future<List<Feeling>>? feelingsFuture;
+  Future<List<Feeling>> feelingsFuture;
   final _memoizer = AsyncMemoizer<List<Feeling>>();
 
   @override
@@ -36,17 +38,21 @@ class _AssessmentFeeling extends State<AssessmentFeeling> {
   Widget build(BuildContext context) {
     return Container(
       child: FutureBuilder(
-        future: _memoizer.runOnce(() => feelingsFuture!),
+        future: _memoizer.runOnce(() => feelingsFuture),
         builder: _buildFeelingPanel,
       ),
     );
   }
 
   _next() {
-    Future.delayed(Duration(milliseconds: 200)).then((value) => {
-          widget.onFinishSelectedFeelings(
-              selectedPosition > 1, feelings[selectedPosition])
-        });
+    Future.delayed(Duration(milliseconds: 200)).then((value) {
+      widget.onFinishSelectedFeelings(
+          selectedPosition > 1, feelings[selectedPosition]);
+      Map<String, dynamic> map = Map();
+      map.putIfAbsent("feeling", () => feelings[selectedPosition].feelingText);
+      ReportUtil.getInstance()
+          .trackEvent(eventName: EventConstants.feeling_next, parameters: map);
+    });
   }
 
   Future<List<Feeling>> initFeelings() {
@@ -70,6 +76,12 @@ class _AssessmentFeeling extends State<AssessmentFeeling> {
                 onTap: () {
                   setState(() {
                     selectedPosition = index;
+                    Map<String, dynamic> map = Map();
+                    map.putIfAbsent("feeling",
+                        () => feelings[selectedPosition].feelingText);
+                    ReportUtil.getInstance().trackEvent(
+                        eventName: EventConstants.feeling_choose,
+                        parameters: map);
                   });
                 },
                 child: Container(
@@ -111,7 +123,7 @@ class _AssessmentFeeling extends State<AssessmentFeeling> {
     if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
       feelings = snapshot.data ?? [];
       if (widget.feeling != null) {
-        selectedPosition = feelings.indexOf(widget.feeling!);
+        selectedPosition = feelings.indexOf(widget.feeling);
         widget.feeling = null;
       }
       return Column(

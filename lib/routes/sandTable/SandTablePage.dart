@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:health/common/EventConstants.dart';
 import 'package:health/common/SandTableUtil.dart';
 import 'package:health/db/DbHelper.dart';
+import 'package:health/report/ReportUtil.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:health/routes/sandTable/SandTableDetailRoute.dart';
@@ -9,7 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:health/extension/ScreenExtension.dart';
 
 class SandTablePage extends StatefulWidget {
-  int? moodCheckId;
+  int moodCheckId;
 
   SandTablePage(this.moodCheckId);
 
@@ -22,7 +24,7 @@ class SandTablePage extends StatefulWidget {
 class _SandTablePageState extends State<SandTablePage> {
   int selectedIndex = -1;
   List<SandTableScene> scenes = [];
-  Future<List<SandTableScene>>? futureSandTableScenes;
+  Future<List<SandTableScene>> futureSandTableScenes;
 
   DbHelper get dbHelper => Provider.of<DbHelper>(context, listen: false);
 
@@ -124,6 +126,10 @@ class _SandTablePageState extends State<SandTablePage> {
             selectedIndex = -1;
           } else {
             selectedIndex = index;
+            Map<String, dynamic> map = Map();
+            map.putIfAbsent("card", () => scenes[selectedIndex].sceneName);
+            ReportUtil.getInstance().trackEvent(
+                eventName: EventConstants.cards_choose, parameters: map);
             _pageController.animateToPage(index,
                 duration: Duration(milliseconds: 500),
                 curve: Curves.easeOutQuart);
@@ -164,7 +170,7 @@ class _SandTablePageState extends State<SandTablePage> {
 
   _onNext() async {
     if (widget.moodCheckId != null) {
-      var entity = await dbHelper.queryMoodCheckById(widget.moodCheckId!).first;
+      var entity = await dbHelper.queryMoodCheckById(widget.moodCheckId).first;
       entity.sandTableSceneId = scenes[selectedIndex].id;
       dbHelper.updateMoodCheck(entity);
       Map<String, dynamic> map = Map();
@@ -178,6 +184,8 @@ class _SandTablePageState extends State<SandTablePage> {
           },
           transitionDuration: Duration(seconds: 2),
           settings: RouteSettings(arguments: map)));
+
+      ReportUtil.getInstance().trackEvent(eventName: EventConstants.cards_next);
     }
   }
 }

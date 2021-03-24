@@ -20,3 +20,5 @@ samples, guidance on mobile development, and a full API reference.
     flutter build apk --obfuscate --split-debug-info=./symbols
 # build IOS
     flutter build ios --obfuscate --split-debug-info=./symbols
+# build moor database model
+    flutter packages pub run build_runner build

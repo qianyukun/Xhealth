@@ -11,100 +11,114 @@ class MoodCheckTable extends DataClass implements Insertable<MoodCheckTable> {
   final int id;
   final int feelingId;
   final String thoughtIds;
-  int? sandTableSceneId;
-  int? breathFeelingId;
+  int sandTableSceneId;
+  int breathFeelingId;
   final DateTime insertTime;
   MoodCheckTable(
-      {required this.id,
-      required this.feelingId,
-      required this.thoughtIds,
+      {@required this.id,
+      @required this.feelingId,
+      @required this.thoughtIds,
       this.sandTableSceneId,
       this.breathFeelingId,
-      required this.insertTime});
+      @required this.insertTime});
   factory MoodCheckTable.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
-      {String? prefix}) {
+      {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
     return MoodCheckTable(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      feelingId: intType
-          .mapFromDatabaseResponse(data['${effectivePrefix}feeling_id'])!,
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      feelingId:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}feeling_id']),
       thoughtIds: stringType
-          .mapFromDatabaseResponse(data['${effectivePrefix}thought_ids'])!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}thought_ids']),
       sandTableSceneId: intType.mapFromDatabaseResponse(
           data['${effectivePrefix}sand_table_scene_id']),
       breathFeelingId: intType
           .mapFromDatabaseResponse(data['${effectivePrefix}breath_feeling_id']),
       insertTime: dateTimeType
-          .mapFromDatabaseResponse(data['${effectivePrefix}insert_time'])!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}insert_time']),
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
-    map['feeling_id'] = Variable<int>(feelingId);
-    map['thought_ids'] = Variable<String>(thoughtIds);
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || feelingId != null) {
+      map['feeling_id'] = Variable<int>(feelingId);
+    }
+    if (!nullToAbsent || thoughtIds != null) {
+      map['thought_ids'] = Variable<String>(thoughtIds);
+    }
     if (!nullToAbsent || sandTableSceneId != null) {
-      map['sand_table_scene_id'] = Variable<int?>(sandTableSceneId);
+      map['sand_table_scene_id'] = Variable<int>(sandTableSceneId);
     }
     if (!nullToAbsent || breathFeelingId != null) {
-      map['breath_feeling_id'] = Variable<int?>(breathFeelingId);
+      map['breath_feeling_id'] = Variable<int>(breathFeelingId);
     }
-    map['insert_time'] = Variable<DateTime>(insertTime);
+    if (!nullToAbsent || insertTime != null) {
+      map['insert_time'] = Variable<DateTime>(insertTime);
+    }
     return map;
   }
 
   MoodCheckDbBeanDefineCompanion toCompanion(bool nullToAbsent) {
     return MoodCheckDbBeanDefineCompanion(
-      id: Value(id),
-      feelingId: Value(feelingId),
-      thoughtIds: Value(thoughtIds),
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      feelingId: feelingId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(feelingId),
+      thoughtIds: thoughtIds == null && nullToAbsent
+          ? const Value.absent()
+          : Value(thoughtIds),
       sandTableSceneId: sandTableSceneId == null && nullToAbsent
           ? const Value.absent()
           : Value(sandTableSceneId),
       breathFeelingId: breathFeelingId == null && nullToAbsent
           ? const Value.absent()
           : Value(breathFeelingId),
-      insertTime: Value(insertTime),
+      insertTime: insertTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(insertTime),
     );
   }
 
   factory MoodCheckTable.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+      {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return MoodCheckTable(
       id: serializer.fromJson<int>(json['id']),
       feelingId: serializer.fromJson<int>(json['feelingId']),
       thoughtIds: serializer.fromJson<String>(json['thoughtIds']),
-      sandTableSceneId: serializer.fromJson<int?>(json['sandTableSceneId']),
-      breathFeelingId: serializer.fromJson<int?>(json['breathFeelingId']),
+      sandTableSceneId: serializer.fromJson<int>(json['sandTableSceneId']),
+      breathFeelingId: serializer.fromJson<int>(json['breathFeelingId']),
       insertTime: serializer.fromJson<DateTime>(json['insertTime']),
     );
   }
   @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'feelingId': serializer.toJson<int>(feelingId),
       'thoughtIds': serializer.toJson<String>(thoughtIds),
-      'sandTableSceneId': serializer.toJson<int?>(sandTableSceneId),
-      'breathFeelingId': serializer.toJson<int?>(breathFeelingId),
+      'sandTableSceneId': serializer.toJson<int>(sandTableSceneId),
+      'breathFeelingId': serializer.toJson<int>(breathFeelingId),
       'insertTime': serializer.toJson<DateTime>(insertTime),
     };
   }
 
   MoodCheckTable copyWith(
-          {int? id,
-          int? feelingId,
-          String? thoughtIds,
-          int? sandTableSceneId,
-          int? breathFeelingId,
-          DateTime? insertTime}) =>
+          {int id,
+          int feelingId,
+          String thoughtIds,
+          int sandTableSceneId,
+          int breathFeelingId,
+          DateTime insertTime}) =>
       MoodCheckTable(
         id: id ?? this.id,
         feelingId: feelingId ?? this.feelingId,
@@ -151,8 +165,8 @@ class MoodCheckDbBeanDefineCompanion extends UpdateCompanion<MoodCheckTable> {
   final Value<int> id;
   final Value<int> feelingId;
   final Value<String> thoughtIds;
-  final Value<int?> sandTableSceneId;
-  final Value<int?> breathFeelingId;
+  final Value<int> sandTableSceneId;
+  final Value<int> breathFeelingId;
   final Value<DateTime> insertTime;
   const MoodCheckDbBeanDefineCompanion({
     this.id = const Value.absent(),
@@ -164,21 +178,21 @@ class MoodCheckDbBeanDefineCompanion extends UpdateCompanion<MoodCheckTable> {
   });
   MoodCheckDbBeanDefineCompanion.insert({
     this.id = const Value.absent(),
-    required int feelingId,
-    required String thoughtIds,
+    @required int feelingId,
+    @required String thoughtIds,
     this.sandTableSceneId = const Value.absent(),
     this.breathFeelingId = const Value.absent(),
-    required DateTime insertTime,
-  })   : feelingId = Value(feelingId),
+    @required DateTime insertTime,
+  })  : feelingId = Value(feelingId),
         thoughtIds = Value(thoughtIds),
         insertTime = Value(insertTime);
   static Insertable<MoodCheckTable> custom({
-    Expression<int>? id,
-    Expression<int>? feelingId,
-    Expression<String>? thoughtIds,
-    Expression<int?>? sandTableSceneId,
-    Expression<int?>? breathFeelingId,
-    Expression<DateTime>? insertTime,
+    Expression<int> id,
+    Expression<int> feelingId,
+    Expression<String> thoughtIds,
+    Expression<int> sandTableSceneId,
+    Expression<int> breathFeelingId,
+    Expression<DateTime> insertTime,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -191,12 +205,12 @@ class MoodCheckDbBeanDefineCompanion extends UpdateCompanion<MoodCheckTable> {
   }
 
   MoodCheckDbBeanDefineCompanion copyWith(
-      {Value<int>? id,
-      Value<int>? feelingId,
-      Value<String>? thoughtIds,
-      Value<int?>? sandTableSceneId,
-      Value<int?>? breathFeelingId,
-      Value<DateTime>? insertTime}) {
+      {Value<int> id,
+      Value<int> feelingId,
+      Value<String> thoughtIds,
+      Value<int> sandTableSceneId,
+      Value<int> breathFeelingId,
+      Value<DateTime> insertTime}) {
     return MoodCheckDbBeanDefineCompanion(
       id: id ?? this.id,
       feelingId: feelingId ?? this.feelingId,
@@ -220,10 +234,10 @@ class MoodCheckDbBeanDefineCompanion extends UpdateCompanion<MoodCheckTable> {
       map['thought_ids'] = Variable<String>(thoughtIds.value);
     }
     if (sandTableSceneId.present) {
-      map['sand_table_scene_id'] = Variable<int?>(sandTableSceneId.value);
+      map['sand_table_scene_id'] = Variable<int>(sandTableSceneId.value);
     }
     if (breathFeelingId.present) {
-      map['breath_feeling_id'] = Variable<int?>(breathFeelingId.value);
+      map['breath_feeling_id'] = Variable<int>(breathFeelingId.value);
     }
     if (insertTime.present) {
       map['insert_time'] = Variable<DateTime>(insertTime.value);
@@ -248,19 +262,21 @@ class MoodCheckDbBeanDefineCompanion extends UpdateCompanion<MoodCheckTable> {
 class $MoodCheckDbBeanDefineTable extends MoodCheckDbBeanDefine
     with TableInfo<$MoodCheckDbBeanDefineTable, MoodCheckTable> {
   final GeneratedDatabase _db;
-  final String? _alias;
+  final String _alias;
   $MoodCheckDbBeanDefineTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
   @override
-  late final GeneratedIntColumn id = _constructId();
+  GeneratedIntColumn get id => _id ??= _constructId();
   GeneratedIntColumn _constructId() {
     return GeneratedIntColumn('id', $tableName, false,
         hasAutoIncrement: true, declaredAsPrimaryKey: true);
   }
 
   final VerificationMeta _feelingIdMeta = const VerificationMeta('feelingId');
+  GeneratedIntColumn _feelingId;
   @override
-  late final GeneratedIntColumn feelingId = _constructFeelingId();
+  GeneratedIntColumn get feelingId => _feelingId ??= _constructFeelingId();
   GeneratedIntColumn _constructFeelingId() {
     return GeneratedIntColumn(
       'feeling_id',
@@ -270,8 +286,9 @@ class $MoodCheckDbBeanDefineTable extends MoodCheckDbBeanDefine
   }
 
   final VerificationMeta _thoughtIdsMeta = const VerificationMeta('thoughtIds');
+  GeneratedTextColumn _thoughtIds;
   @override
-  late final GeneratedTextColumn thoughtIds = _constructThoughtIds();
+  GeneratedTextColumn get thoughtIds => _thoughtIds ??= _constructThoughtIds();
   GeneratedTextColumn _constructThoughtIds() {
     return GeneratedTextColumn(
       'thought_ids',
@@ -282,8 +299,10 @@ class $MoodCheckDbBeanDefineTable extends MoodCheckDbBeanDefine
 
   final VerificationMeta _sandTableSceneIdMeta =
       const VerificationMeta('sandTableSceneId');
+  GeneratedIntColumn _sandTableSceneId;
   @override
-  late final GeneratedIntColumn sandTableSceneId = _constructSandTableSceneId();
+  GeneratedIntColumn get sandTableSceneId =>
+      _sandTableSceneId ??= _constructSandTableSceneId();
   GeneratedIntColumn _constructSandTableSceneId() {
     return GeneratedIntColumn(
       'sand_table_scene_id',
@@ -294,8 +313,10 @@ class $MoodCheckDbBeanDefineTable extends MoodCheckDbBeanDefine
 
   final VerificationMeta _breathFeelingIdMeta =
       const VerificationMeta('breathFeelingId');
+  GeneratedIntColumn _breathFeelingId;
   @override
-  late final GeneratedIntColumn breathFeelingId = _constructBreathFeelingId();
+  GeneratedIntColumn get breathFeelingId =>
+      _breathFeelingId ??= _constructBreathFeelingId();
   GeneratedIntColumn _constructBreathFeelingId() {
     return GeneratedIntColumn(
       'breath_feeling_id',
@@ -305,8 +326,10 @@ class $MoodCheckDbBeanDefineTable extends MoodCheckDbBeanDefine
   }
 
   final VerificationMeta _insertTimeMeta = const VerificationMeta('insertTime');
+  GeneratedDateTimeColumn _insertTime;
   @override
-  late final GeneratedDateTimeColumn insertTime = _constructInsertTime();
+  GeneratedDateTimeColumn get insertTime =>
+      _insertTime ??= _constructInsertTime();
   GeneratedDateTimeColumn _constructInsertTime() {
     return GeneratedDateTimeColumn(
       'insert_time',
@@ -336,11 +359,11 @@ class $MoodCheckDbBeanDefineTable extends MoodCheckDbBeanDefine
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
     }
     if (data.containsKey('feeling_id')) {
       context.handle(_feelingIdMeta,
-          feelingId.isAcceptableOrUnknown(data['feeling_id']!, _feelingIdMeta));
+          feelingId.isAcceptableOrUnknown(data['feeling_id'], _feelingIdMeta));
     } else if (isInserting) {
       context.missing(_feelingIdMeta);
     }
@@ -348,7 +371,7 @@ class $MoodCheckDbBeanDefineTable extends MoodCheckDbBeanDefine
       context.handle(
           _thoughtIdsMeta,
           thoughtIds.isAcceptableOrUnknown(
-              data['thought_ids']!, _thoughtIdsMeta));
+              data['thought_ids'], _thoughtIdsMeta));
     } else if (isInserting) {
       context.missing(_thoughtIdsMeta);
     }
@@ -356,19 +379,19 @@ class $MoodCheckDbBeanDefineTable extends MoodCheckDbBeanDefine
       context.handle(
           _sandTableSceneIdMeta,
           sandTableSceneId.isAcceptableOrUnknown(
-              data['sand_table_scene_id']!, _sandTableSceneIdMeta));
+              data['sand_table_scene_id'], _sandTableSceneIdMeta));
     }
     if (data.containsKey('breath_feeling_id')) {
       context.handle(
           _breathFeelingIdMeta,
           breathFeelingId.isAcceptableOrUnknown(
-              data['breath_feeling_id']!, _breathFeelingIdMeta));
+              data['breath_feeling_id'], _breathFeelingIdMeta));
     }
     if (data.containsKey('insert_time')) {
       context.handle(
           _insertTimeMeta,
           insertTime.isAcceptableOrUnknown(
-              data['insert_time']!, _insertTimeMeta));
+              data['insert_time'], _insertTimeMeta));
     } else if (isInserting) {
       context.missing(_insertTimeMeta);
     }
@@ -378,7 +401,7 @@ class $MoodCheckDbBeanDefineTable extends MoodCheckDbBeanDefine
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  MoodCheckTable map(Map<String, dynamic> data, {String? tablePrefix}) {
+  MoodCheckTable map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return MoodCheckTable.fromData(data, _db, prefix: effectivePrefix);
   }
@@ -391,8 +414,9 @@ class $MoodCheckDbBeanDefineTable extends MoodCheckDbBeanDefine
 
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
-  late final $MoodCheckDbBeanDefineTable moodCheckDbBeanDefine =
-      $MoodCheckDbBeanDefineTable(this);
+  $MoodCheckDbBeanDefineTable _moodCheckDbBeanDefine;
+  $MoodCheckDbBeanDefineTable get moodCheckDbBeanDefine =>
+      _moodCheckDbBeanDefine ??= $MoodCheckDbBeanDefineTable(this);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override

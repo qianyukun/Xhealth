@@ -5,13 +5,13 @@ class FeelingUtil {
 
   FeelingUtil._();
 
-  static FeelingUtil? _instance;
+  static FeelingUtil _instance;
 
   static FeelingUtil getInstance() {
     if (_instance == null) {
       _instance = FeelingUtil._();
     }
-    return _instance!;
+    return _instance;
   }
 
   Future<List<Feeling>> getFeelings() async {

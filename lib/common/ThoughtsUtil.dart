@@ -7,13 +7,13 @@ class ThoughtsUtil {
     getThoughts();
   }
 
-  static ThoughtsUtil? _instance;
+  static ThoughtsUtil _instance;
 
   static ThoughtsUtil getInstance() {
     if (_instance == null) {
       _instance = ThoughtsUtil._();
     }
-    return _instance!;
+    return _instance;
   }
 
   Future<List<Thought>> getThoughts() async {
@@ -34,7 +34,7 @@ class ThoughtsUtil {
       _thoughts.add(Thought(id: 13, thoughtAdj: "Helpless", thoughtNoun:"helplessness"));
       _thoughts.add(Thought(id: 14, thoughtAdj: "Frustrated", thoughtNoun:"frustration"));
       _thoughts.add(Thought(id: 15, thoughtAdj: "Bored", thoughtNoun:"bore"));
-      _thoughts.add(Thought(id: 16, thoughtAdj: "Fear", thoughtNoun:"fearness"));
+      _thoughts.add(Thought(id: 16, thoughtAdj: "Fear", thoughtNoun:"fear"));
     }
     return _thoughts;
   }

@@ -5,13 +5,13 @@ class BreatheFeelingUtil {
 
   BreatheFeelingUtil._();
 
-  static BreatheFeelingUtil? _instance;
+  static BreatheFeelingUtil _instance;
 
   static BreatheFeelingUtil getInstance() {
     if (_instance == null) {
       _instance = BreatheFeelingUtil._();
     }
-    return _instance!;
+    return _instance;
   }
 
   Future<List<BreatheFeeling>> getBreatheFeelings() async {

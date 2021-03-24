@@ -11,8 +11,8 @@ import 'package:health/routes/selfAssessment/Thought.dart';
 class FlowModel {
   Feeling feeling;
   List<Thought> thoughts;
-  SandTableScene? sandTableScene;
-  BreatheFeeling? breathFeeling;
+  SandTableScene sandTableScene;
+  BreatheFeeling breathFeeling;
   DateTime insertTime;
 
   FlowModel(this.feeling, this.thoughts, this.sandTableScene,
@@ -33,11 +33,11 @@ class FlowModel {
         thoughts,
         moodCheckTable.sandTableSceneId != null
             ? SandTableSceneUtil.getInstance()
-                .getSandTableSceneById(moodCheckTable.sandTableSceneId!)
+                .getSandTableSceneById(moodCheckTable.sandTableSceneId)
             : null,
         moodCheckTable.breathFeelingId != null
             ? BreatheFeelingUtil.getInstance()
-                .getBreatheFeelingById(moodCheckTable.breathFeelingId!)
+                .getBreatheFeelingById(moodCheckTable.breathFeelingId)
             : null,
         moodCheckTable.insertTime);
   }

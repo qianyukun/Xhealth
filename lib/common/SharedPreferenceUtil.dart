@@ -9,7 +9,7 @@ class PersistentStorage {
   factory PersistentStorage() => _instance;
 
   /// SharedPreferences对象
-  static late SharedPreferences _storage;
+  static SharedPreferences _storage;
 
   /// 命名构造函数 用于初始化SharedPreferences实例对象
   PersistentStorage._init() {

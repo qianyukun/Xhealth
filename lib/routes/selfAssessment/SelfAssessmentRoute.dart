@@ -27,10 +27,10 @@ class _SelfAssessmentRouteState extends State<SelfAssessmentRoute> {
   int totalCheckCount = 3;
   int currentPosition = 0;
   bool isFeelingGood = false;
-  Feeling? feeling;
+  Feeling feeling;
   List<Thought> selectedThoughts = [];
   var _hasEnterNameFuture;
-  late List<Widget> contents;
+  List<Widget> contents;
 
   DbHelper get dbHelper => Provider.of<DbHelper>(context, listen: false);
 
@@ -61,8 +61,7 @@ class _SelfAssessmentRouteState extends State<SelfAssessmentRoute> {
           body: Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage("imgs/bg/bg_guide.jpg"),
-                  fit: BoxFit.cover),
+                  image: AssetImage("imgs/bg/bg_guide.jpg"), fit: BoxFit.cover),
             ),
             child: SafeArea(
               child: Column(
@@ -162,7 +161,7 @@ class _SelfAssessmentRouteState extends State<SelfAssessmentRoute> {
   }
 
   void _onFinishSelectFeeling(bool isFeelingGood, Feeling feeling) {
-    if (this.feeling != null && feeling.id != this.feeling!.id) {
+    if (this.feeling != null && feeling.id != this.feeling.id) {
       selectedThoughts.clear();
     }
     this.isFeelingGood = isFeelingGood;
@@ -173,7 +172,7 @@ class _SelfAssessmentRouteState extends State<SelfAssessmentRoute> {
   void _onFinishSelectThought(List<Thought> thoughts) async {
     selectedThoughts.addAll(thoughts);
     var moodCheckId =
-        await dbHelper.addMoodCheckWithThoughts(this.feeling!.id, thoughts);
+        await dbHelper.addMoodCheckWithThoughts(this.feeling.id, thoughts);
 
     if (moodCheckId > -1) {
       Map<String, dynamic> map = Map();
@@ -181,12 +180,10 @@ class _SelfAssessmentRouteState extends State<SelfAssessmentRoute> {
       map.putIfAbsent("scroll", () => 300.0);
 
       Navigator.of(context).pop();
-      Navigator.of(context).push(PageRouteBuilder(
-          pageBuilder: (BuildContext context, Animation animation,
-              Animation secondaryAnimation) {
-            return isFeelingGood ? HomeRoute() : SandTableRoute();
-          },
-          settings: RouteSettings(arguments: map)));
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          isFeelingGood ? HomeRoute.homeName : SandTableRoute.sandTableName,
+          (Route<dynamic> route) => false,
+          arguments: map);
     }
   }
 

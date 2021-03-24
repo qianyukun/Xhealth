@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class Feeling {
   int id;
   bool isPositive;
@@ -6,9 +8,9 @@ class Feeling {
   String bigImageUrl;
 
   Feeling(
-      {required this.id,
-      required this.isPositive,
-      required this.feelingText,
-      required this.imageUrl,
-      required this.bigImageUrl});
+      {@required this.id,
+      @required this.isPositive,
+      @required this.feelingText,
+      @required this.imageUrl,
+      @required this.bigImageUrl});
 }

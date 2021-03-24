@@ -5,13 +5,13 @@ class SandTableSceneUtil {
 
   SandTableSceneUtil._();
 
-  static SandTableSceneUtil? _instance;
+  static SandTableSceneUtil _instance;
 
   static SandTableSceneUtil getInstance() {
     if (_instance == null) {
       _instance = SandTableSceneUtil._();
     }
-    return _instance!;
+    return _instance;
   }
 
   Future<List<SandTableScene>> getSandTableScenes() async {

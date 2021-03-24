@@ -20,7 +20,7 @@ class _SplashRouteState extends State<SplashRoute> {
   final String firstOpened = "first_opened";
 
   bool isFirstOpen = false;
-  late Timer _timer;
+  Timer _timer;
 
   @override
   void initState() {

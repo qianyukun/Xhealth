@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class SandTableScene {
   int id;
   String sourceId;
@@ -5,8 +7,8 @@ class SandTableScene {
   String sceneName;
 
   SandTableScene(
-      {required this.id,
-      required this.sourceId,
-      required this.imgUrl,
-      required this.sceneName});
+      {@required this.id,
+      @required this.sourceId,
+      @required this.imgUrl,
+      @required this.sceneName});
 }

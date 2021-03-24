@@ -1,8 +1,10 @@
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
+import 'package:health/common/EventConstants.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:health/common/ThoughtsUtil.dart';
+import 'package:health/report/ReportUtil.dart';
 import 'package:health/routes/selfAssessment/Thought.dart';
 
 import 'SelfAssessmentRoute.dart';
@@ -15,11 +17,11 @@ class AssessmentThought extends StatefulWidget {
   List<Thought> initThoughts = [];
 
   AssessmentThought(
-      {Key? key,
-      required this.onFinishSelectThought,
-      required this.onPreSelectThought,
-      required this.isFeelingGood,
-      required this.initThoughts})
+      {Key key,
+      @required this.onFinishSelectThought,
+      @required this.onPreSelectThought,
+      @required this.isFeelingGood,
+      @required this.initThoughts})
       : super(key: key);
 
   @override
@@ -33,7 +35,7 @@ class _AssessmentThoughtState extends State<AssessmentThought> {
   Set<Thought> selectedThoughts = new Set();
 
   bool isFeelingGood;
-  Future<List<Thought>>? thoughtFuture;
+  Future<List<Thought>> thoughtFuture;
 
   _AssessmentThoughtState(this.isFeelingGood);
 
@@ -119,7 +121,7 @@ class _AssessmentThoughtState extends State<AssessmentThought> {
 
   _buildThoughtsWidget() {
     return FutureBuilder<List<Thought>>(
-      future: _memoizer.runOnce(() => thoughtFuture!),
+      future: _memoizer.runOnce(() => thoughtFuture),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.hasData) {
@@ -155,6 +157,10 @@ class _AssessmentThoughtState extends State<AssessmentThought> {
                           }
                           selectedThoughts.add(thoughts[index]);
                           widget.onPreSelectThought(selectedThoughts.toList());
+                          Map<String, dynamic> map = Map();
+                          map.putIfAbsent("thought", () => thoughts[index].thoughtAdj);
+                          ReportUtil.getInstance()
+                              .trackEvent(eventName: EventConstants.thoughts_choose,parameters: map);
                         }
                       });
                     },
@@ -192,6 +198,8 @@ class _AssessmentThoughtState extends State<AssessmentThought> {
   }
 
   _next() {
+    ReportUtil.getInstance()
+        .trackEvent(eventName: EventConstants.thoughts_next);
     widget.onFinishSelectThought(selectedThoughts.toList());
   }
 }

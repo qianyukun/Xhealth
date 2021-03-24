@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:health/common/EventConstants.dart';
 import 'package:health/db/DbHelper.dart';
 import 'package:health/db/models/FlowModel.dart';
 import 'package:health/db/table/MoodCheckResult.dart';
+import 'package:health/report/ReportUtil.dart';
 import 'package:health/routes/breath/BreathRoute.dart';
 import 'package:health/routes/breath/BreathSource.dart';
 import 'package:health/routes/sandTable/SandTableScene.dart';
@@ -10,8 +12,8 @@ import 'package:health/extension/ScreenExtension.dart';
 
 class SandTableDetailRoute extends StatelessWidget {
   static const String sandTableDetailName = "/sandTableDetail";
-  int? moodCheckId;
-  SandTableScene? sandTableScene;
+  int moodCheckId;
+  SandTableScene sandTableScene;
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +45,10 @@ class SandTableDetailRoute extends StatelessWidget {
 }
 
 class SandTableDetailPage extends StatefulWidget {
-  final SandTableScene? sandTableScene;
-  final int? moodCheckId;
+  final SandTableScene sandTableScene;
+  final int moodCheckId;
 
-  SandTableDetailPage({Key? key, this.sandTableScene, this.moodCheckId})
+  SandTableDetailPage({Key key, this.sandTableScene, this.moodCheckId})
       : super(key: key);
 
   @override
@@ -64,11 +66,11 @@ class _SandTableDetailPageState extends State<SandTableDetailPage>
 
   DbHelper get dbHelper => Provider.of<DbHelper>(context, listen: false);
 
-  Future<MoodCheckTable>? _futureMoodCheck;
-  FlowModel? flowModel;
+  Future<MoodCheckTable> _futureMoodCheck;
+  FlowModel flowModel;
 
-  late final AnimationController _btnAnimationController;
-  late final Animation<double> _btnAnimation;
+  AnimationController _btnAnimationController;
+  Animation<double> _btnAnimation;
 
   @override
   void initState() {
@@ -113,7 +115,7 @@ class _SandTableDetailPageState extends State<SandTableDetailPage>
     super.dispose();
   }
 
-  Widget buildDetail(SandTableScene? args) {
+  Widget buildDetail(SandTableScene args) {
     return SafeArea(
         child: args == null
             ? Align()
@@ -125,14 +127,16 @@ class _SandTableDetailPageState extends State<SandTableDetailPage>
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
-                      child: Padding(
+                      child: Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.only(top: 40),
                         padding: EdgeInsets.only(
                             left: 20.pt,
-                            top: 94.pt,
+                            top: 22.pt,
                             right: 20.pt,
-                            bottom: 42.pt),
+                            bottom: 22.pt),
                         child: Text(
-                          "Your ${flowModel?.thoughts[0].thoughtNoun} look like this. \nLet’s cope with it.",
+                          "Your ${flowModel?.thoughts[0].thoughtNoun} looks like this. \nLet’s cope with it.",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 20.pt,
@@ -216,14 +220,14 @@ class _SandTableDetailPageState extends State<SandTableDetailPage>
   }
 
   Future<MoodCheckTable> initFutureMoodCheck() async {
-    return await dbHelper.queryMoodCheckById(widget.moodCheckId!).first;
+    return await dbHelper.queryMoodCheckById(widget.moodCheckId).first;
   }
 
   Widget _builderMoodCheck(
       BuildContext context, AsyncSnapshot<MoodCheckTable> snapshot) {
     if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
       var moodCheckTable = snapshot.data;
-      flowModel = FlowModel.convertFromDbMoodCheckTable(moodCheckTable!);
+      flowModel = FlowModel.convertFromDbMoodCheckTable(moodCheckTable);
 
       Future.delayed(Duration(milliseconds: 200), () {
         if (_animSentence == 0) {
@@ -257,6 +261,7 @@ class _SandTableDetailPageState extends State<SandTableDetailPage>
   }
 
   void _onNext() {
+    ReportUtil.getInstance().trackEvent(eventName: EventConstants.cards_tap);
     setState(() {
       _animState++;
     });

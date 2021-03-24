@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:health/common/DailyMotionSentencesUtil.dart';
+import 'package:health/common/EventConstants.dart';
 import 'package:health/common/Global.dart';
 import 'package:health/db/DbHelper.dart';
 import 'package:health/db/models/FlowModel.dart';
 import 'package:health/db/table/MoodCheckResult.dart';
+import 'package:health/report/ReportUtil.dart';
 import 'package:health/routes/breath/BreathRoute.dart';
 import 'package:health/routes/selfAssessment/SelfAssessmentRoute.dart';
 import 'package:health/routes/sound/SoundRoute.dart';
@@ -25,12 +27,12 @@ class HomeRoute extends StatefulWidget {
 
 class _HomeRouteState extends State<HomeRoute> {
   ///用户名
-  String? nickName;
+  String nickName;
 
   ///标题栏颜色和透明度
   Color _timeColor = Colors.white;
   int alpha = 0;
-  late ScrollController _controller = ScrollController();
+  ScrollController _controller = ScrollController();
 
   ///每日一语
   Future<DailyMotion> dailyMotionFuture =
@@ -41,7 +43,7 @@ class _HomeRouteState extends State<HomeRoute> {
 
   DbHelper get dbHelper => Provider.of<DbHelper>(context, listen: false);
 
-  Future<List<MoodCheckTable>>? futureMoodChecks;
+  Future<List<MoodCheckTable>> futureMoodChecks;
 
   double scrollY = 0;
 
@@ -63,44 +65,53 @@ class _HomeRouteState extends State<HomeRoute> {
             _controller.animateTo(scrollY,
                 curve: Curves.easeOutQuart,
                 duration: Duration(milliseconds: 300));
-            arguments.remove("scroll");
+            args.remove("scroll");
           }
         });
       }
     }
-    return Scaffold(
-      body: Container(
-        color: Colors.white,
-        child: Stack(
-          children: [
-            CustomScrollView(
-              controller: _controller,
-              slivers: [
-                SliverList(
-                    delegate: SliverChildListDelegate([
-                  buildHeader(),
-                ])),
-                FutureBuilder(
-                  builder: buildFlow,
-                  future: futureMoodChecks,
+    return WillPopScope(
+        child: Scaffold(
+          body: Container(
+            color: Colors.white,
+            child: Stack(
+              children: [
+                CustomScrollView(
+                  controller: _controller,
+                  slivers: [
+                    SliverList(
+                        delegate: SliverChildListDelegate([
+                      buildHeader(),
+                    ])),
+                    FutureBuilder(
+                      builder: buildFlow,
+                      future: futureMoodChecks,
+                    ),
+                    SliverList(
+                        delegate: SliverChildListDelegate(
+                            [buildMoment(), buildFooter()])),
+                  ],
                 ),
-                SliverList(
-                    delegate: SliverChildListDelegate(
-                        [buildMoment(), buildFooter()])),
+                buildTitleBar(),
               ],
             ),
-            buildTitleBar(),
-          ],
+          ),
         ),
-      ),
-    );
+        onWillPop: () async {
+          ReportUtil.getInstance()
+              .trackEvent(eventName: EventConstants.app_out);
+          return true;
+        });
   }
 
   void _onCheck() {
+    ReportUtil.getInstance()
+        .trackEvent(eventName: EventConstants.feeling_check);
     Navigator.of(context).pushNamed(SelfAssessmentRoute.selfAssessmentName);
   }
 
   void _onSoundPlay() {
+    ReportUtil.getInstance().trackEvent(eventName: EventConstants.sounds_click);
     Navigator.of(context).push(PageRouteBuilder(pageBuilder:
         (BuildContext context, Animation animation,
             Animation secondaryAnimation) {
@@ -109,6 +120,8 @@ class _HomeRouteState extends State<HomeRoute> {
   }
 
   void _onBreathing() {
+    ReportUtil.getInstance()
+        .trackEvent(eventName: EventConstants.breathing_click);
     Map<String, dynamic> map = Map();
     map.putIfAbsent("breathSource", () => BreathSource.home);
     // Navigator.of(context)
@@ -173,7 +186,7 @@ class _HomeRouteState extends State<HomeRoute> {
                   padding:
                       EdgeInsets.symmetric(vertical: 9.2, horizontal: 20.13),
                   child: Text(
-                    "${DateFormat("MMM d.EEE").format(DateTime.now())}",
+                    "${DateFormat("EEEE,MMM d").format(DateTime.now())}",
                     style: TextStyle(
                         color: const Color(0xFF333333),
                         fontSize: 16,
@@ -480,7 +493,7 @@ class _HomeRouteState extends State<HomeRoute> {
                 child: Text(
                   "Breathing",
                   style: TextStyle(
-                      fontSize: 20.pt,
+                      fontSize: 18.pt,
                       color: const Color(0xFF333333),
                       fontWeight: FontWeight.w500),
                 ),

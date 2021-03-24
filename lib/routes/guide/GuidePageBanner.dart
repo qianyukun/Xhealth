@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class BannerBean {
   /// banner 地址
   String bannerUrl;
@@ -9,7 +11,7 @@ class BannerBean {
   String bannerDesc;
 
   BannerBean(
-      {required this.bannerUrl,
-      required this.bannerTitle,
-      required this.bannerDesc});
+      {@required this.bannerUrl,
+      @required this.bannerTitle,
+      @required this.bannerDesc});
 }

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "539937496654",
+    "project_id": "xmind-c4e05",
+    "storage_bucket": "xmind-c4e05.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:539937496654:android:e928251da57b4154d22d1f",
+        "android_client_info": {
+          "package_name": "com.better.life.flow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "539937496654-e9tgf7q4dr34b0m4ifdo34e97i8tlc5e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwB7zHAflIqWP6WWQ67V4duuXwuyF3wtM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "539937496654-e9tgf7q4dr34b0m4ifdo34e97i8tlc5e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

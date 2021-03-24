@@ -8,7 +8,7 @@ class StringLocalizations {
 
 
   ///此处通过静态方式来初始化
-  static StringLocalizations? of(BuildContext context) {
+  static StringLocalizations of(BuildContext context) {
     ///Localizations 是多国语言资源的汇总
     return Localizations.of<StringLocalizations>(context, StringLocalizations);
   }
@@ -21,7 +21,7 @@ class StringLocalizations {
   };
 
   get appName {
-    return _localizedValues[locale.languageCode]!['app name'];
+    return _localizedValues[locale.languageCode]['app name'];
   }
 
 }

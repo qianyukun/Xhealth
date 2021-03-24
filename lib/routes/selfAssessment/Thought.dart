@@ -1,9 +1,11 @@
+import 'package:flutter/foundation.dart';
+
 class Thought {
   final int id;
   final String thoughtAdj;
   final String thoughtNoun;
 
-  Thought({required this.id, required this.thoughtAdj, required this.thoughtNoun});
+  Thought({@required this.id, @required this.thoughtAdj, @required this.thoughtNoun});
 
   @override
   String toString() {

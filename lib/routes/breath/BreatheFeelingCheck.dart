@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:health/common/EventConstants.dart';
 import 'package:health/db/DbHelper.dart';
+import 'package:health/report/ReportUtil.dart';
 import 'package:health/routes/breath/BreatheFeelingUtil.dart';
 import 'package:provider/provider.dart';
 
@@ -20,9 +22,9 @@ class BreatheFeelingCheck extends StatefulWidget {
 class _BreatheFeelingCheckState extends State<BreatheFeelingCheck> {
   List<BreatheFeeling> breathResultFeelings = [];
 
-  Future<List<BreatheFeeling>>? futureBreatheFeeling;
+  Future<List<BreatheFeeling>> futureBreatheFeeling;
   int selectedPosition = -1;
-  int? moodCheckId;
+  int moodCheckId;
 
   DbHelper get dbHelper => Provider.of<DbHelper>(context, listen: false);
   BreathSource fromHome = BreathSource.selfAssessment;
@@ -108,7 +110,7 @@ class _BreatheFeelingCheckState extends State<BreatheFeelingCheck> {
     _onBackPressed();
   }
 
-  Future<List<BreatheFeeling>>? initBreatheFeeling() {
+  Future<List<BreatheFeeling>> initBreatheFeeling() {
     return BreatheFeelingUtil.getInstance().getBreatheFeelings();
   }
 
@@ -178,9 +180,13 @@ class _BreatheFeelingCheckState extends State<BreatheFeelingCheck> {
 
   void _recordMoodCheck() async {
     if (moodCheckId != null) {
-      var entity = await dbHelper.queryMoodCheckById(moodCheckId!).first;
+      var entity = await dbHelper.queryMoodCheckById(moodCheckId).first;
       entity.breathFeelingId = breathResultFeelings[selectedPosition].id;
       dbHelper.updateMoodCheck(entity);
+      Map<String, dynamic> map = Map();
+      map.putIfAbsent("feeling", () => breathResultFeelings[selectedPosition].breatheFeelingText);
+      ReportUtil.getInstance()
+          .trackEvent(eventName: EventConstants.secfeeling__choose,parameters: map);
     }
     _enterHome();
   }

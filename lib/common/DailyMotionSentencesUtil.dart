@@ -5,17 +5,17 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class DailyMotionSentencesUtil {
-  late List<DailyMotion> _dailyMotion = [];
+  List<DailyMotion> _dailyMotion = [];
 
   DailyMotionSentencesUtil._();
 
-  static DailyMotionSentencesUtil? _instance;
+  static DailyMotionSentencesUtil _instance;
 
   static DailyMotionSentencesUtil getInstance() {
     if (_instance == null) {
       _instance = DailyMotionSentencesUtil._();
     }
-    return _instance!;
+    return _instance;
   }
 
   Future<DailyMotion> getSentence() async {

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:health/common/EventConstants.dart';
+import 'package:health/report/ReportUtil.dart';
 import 'package:health/routes/breath/BreathRoute.dart';
 import 'package:health/routes/breath/BreathSource.dart';
 import 'package:health/extension/ScreenExtension.dart';
@@ -104,5 +106,7 @@ class _BreatheResultState extends State<BreatheResult> {
     map.putIfAbsent("breathSource", () => BreathSource.home);
     Navigator.of(context)
         .popAndPushNamed(BreathRoute.breathRouteName, arguments: map);
+    ReportUtil.getInstance()
+        .trackEvent(eventName: EventConstants.home_breathe_start_again);
   }
 }

@@ -44,3 +44,9 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+/.gradle/
+/.metadata
+/local.properties
+/pubspec.lock
+/test/
+/web/

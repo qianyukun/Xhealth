@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:health/common/EventConstants.dart';
+import 'package:health/report/ReportUtil.dart';
 import 'package:health/routes/HomeRoute.dart';
 import 'package:health/routes/breath/BreathSource.dart';
 import 'package:health/routes/breath/BreatheResult.dart';
@@ -19,17 +21,17 @@ class BreathRoute extends StatefulWidget {
 
 class _BreathRouteState extends State<BreathRoute>
     with SingleTickerProviderStateMixin {
-  late Animation<double> _breatheAnim;
-  late Animation<double> _breatheMidAnim;
-  late Animation<double> _breatheOutAnim;
-  late AnimationController _controller;
+  Animation<double> _breatheAnim;
+  Animation<double> _breatheMidAnim;
+  Animation<double> _breatheOutAnim;
+  AnimationController _controller;
 
   int _count = -1;
   int _totalCount = 60;
-  Timer? _timer;
-  Timer? initDelayTimer;
+  Timer _timer;
+  Timer initDelayTimer;
   BreathSource fromHome = BreathSource.selfAssessment;
-  int? moodCheckId;
+  int moodCheckId;
 
   @override
   void initState() {
@@ -237,7 +239,7 @@ class _BreathRouteState extends State<BreathRoute>
   _buildFinishBtn() {
     return Align(
       child: TextButton(
-        onPressed: _onFinishBreathe,
+        onPressed: _onFinishEarlier,
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.pt, vertical: 10.pt),
           child: Text(
@@ -311,6 +313,13 @@ class _BreathRouteState extends State<BreathRoute>
   }
 
   void _onBackPressed() {
+    if (fromHome == BreathSource.home) {
+      ReportUtil.getInstance()
+          .trackEvent(eventName: EventConstants.home_breathe_back);
+    } else {
+      ReportUtil.getInstance()
+          .trackEvent(eventName: EventConstants.cards_breathe_off);
+    }
     _onFinishBreathe();
     // Navigator.of(context)
     //     .pushNamedAndRemoveUntil(HomeRoute.homeName, (route) => false);
@@ -338,5 +347,16 @@ class _BreathRouteState extends State<BreathRoute>
     } else {
       Navigator.of(context).popAndPushNamed(HomeRoute.homeName);
     }
+  }
+
+  void _onFinishEarlier() {
+    if (fromHome == BreathSource.home) {
+      ReportUtil.getInstance()
+          .trackEvent(eventName: EventConstants.home_breathe_finishealrlier);
+    } else {
+      ReportUtil.getInstance()
+          .trackEvent(eventName: EventConstants.cards_breathe_finishealrlier);
+    }
+    _onFinishBreathe();
   }
 }

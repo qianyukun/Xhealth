@@ -3,6 +3,8 @@ import 'dart:math';
 
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
+import 'package:health/common/EventConstants.dart';
+import 'package:health/report/ReportUtil.dart';
 import 'package:health/widget/SeekBar.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
@@ -20,7 +22,7 @@ class SoundRoute extends StatefulWidget {
 }
 
 class _SoundRouteState extends State<SoundRoute> {
-  late AudioPlayer _player;
+  AudioPlayer _player;
   int currentPlaylistIndex = 0;
   bool panelVisible = true;
 
@@ -106,7 +108,7 @@ class _SoundRouteState extends State<SoundRoute> {
         count: 5),
   ];
 
-  Timer? autoInvisible;
+  Timer autoInvisible;
 
   @override
   void initState() {
@@ -150,7 +152,7 @@ class _SoundRouteState extends State<SoundRoute> {
                 onTap: () {
                   setState(() {
                     panelVisible = !panelVisible;
-                    if(panelVisible){
+                    if (panelVisible) {
                       startAutoVisible();
                     } else {
                       autoInvisible?.cancel();
@@ -181,7 +183,7 @@ class _SoundRouteState extends State<SoundRoute> {
   }
 
   _buildSeekBar() {
-    return StreamBuilder<Duration?>(
+    return StreamBuilder<Duration>(
       stream: _player.durationStream,
       builder: (context, snapshot) {
         final singleAudioDuration = snapshot.data ?? Duration.zero;
@@ -237,12 +239,12 @@ class _SoundRouteState extends State<SoundRoute> {
       height: double.infinity,
       width: double.infinity,
       color: Colors.black.withOpacity(0.1),
-      child: StreamBuilder<SequenceState?>(
+      child: StreamBuilder<SequenceState>(
         stream: _player.sequenceStateStream,
         builder: (context, snapshot) {
           final state = snapshot.data;
-          if (state?.sequence.isEmpty ?? true) return SizedBox();
-          final metadata = state!.currentSource!.tag as AudioMetadata;
+          if (state?.sequence?.isEmpty ?? true) return SizedBox();
+          final metadata = state.currentSource.tag as AudioMetadata;
           return SafeArea(
               child: Container(
                   alignment: Alignment.topCenter,
@@ -286,7 +288,13 @@ class _SoundRouteState extends State<SoundRoute> {
   }
 
   _nextAudio() async {
+    if (!panelVisible) {
+      return;
+    }
+    startAutoVisible();
     try {
+      ReportUtil.getInstance()
+          .trackEvent(eventName: EventConstants.sounds_next);
       playlistPosition = Duration();
       playlistBufferedPosition = Duration();
       lastPosition = Duration();
@@ -303,7 +311,13 @@ class _SoundRouteState extends State<SoundRoute> {
   }
 
   _preAudio() async {
+    if (!panelVisible) {
+      return;
+    }
+    startAutoVisible();
     try {
+      ReportUtil.getInstance()
+          .trackEvent(eventName: EventConstants.sounds_previous);
       playlistPosition = Duration();
       playlistBufferedPosition = Duration();
       lastPosition = Duration();
@@ -341,6 +355,7 @@ class _SoundRouteState extends State<SoundRoute> {
   }
 
   void _onBackPress() {
+    ReportUtil.getInstance().trackEvent(eventName: EventConstants.sounds_back);
     Navigator.of(context).pop();
   }
 

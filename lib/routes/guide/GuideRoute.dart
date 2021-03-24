@@ -15,7 +15,7 @@ class GuideRoute extends StatefulWidget {
 }
 
 class _GuideRouteState extends State<GuideRoute> {
-  late List<BannerBean> bannerData;
+  List<BannerBean> bannerData;
   final PageController _pageController = PageController();
   final PageController _pageBgController = PageController();
   var topPageOffset = 0.0;
