@@ -1,0 +1,4 @@
+enum BreathSource{
+  selfAssessment,
+  home
+}
