@@ -182,7 +182,6 @@ class _SandTablePageState extends State<SandTablePage> {
               Animation secondaryAnimation) {
             return SandTableDetailRoute();
           },
-          transitionDuration: Duration(seconds: 2),
           settings: RouteSettings(arguments: map)));
 
       ReportUtil.getInstance().trackEvent(eventName: EventConstants.cards_next);

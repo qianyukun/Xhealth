@@ -207,7 +207,7 @@ class _SandTableDetailPageState extends State<SandTableDetailPage>
         alignment: Alignment.topCenter,
         margin: EdgeInsets.only(top: 272.pt),
         child: Text(
-          "The ${widget.sandTableScene?.sceneName} has gone away.\nLet's relax for a moment.",
+          "The ${flowModel?.thoughts[0].thoughtNoun} has gone away.\nLet's relax for a moment.",
           textAlign: TextAlign.center,
           strutStyle: StrutStyle(leading: 0.9.pt),
           style: TextStyle(
@@ -287,15 +287,18 @@ class _SandTableDetailPageState extends State<SandTableDetailPage>
     Map<String, dynamic> map = Map();
     map.putIfAbsent("moodCheckId", () => widget.moodCheckId);
     map.putIfAbsent("breathSource", () => BreathSource.selfAssessment);
-    // Navigator.of(context)
-    //     .popAndPushNamed(BreathRoute.breathRouteName, arguments: map);
-
     Navigator.of(context).pop();
     Navigator.of(context).push(PageRouteBuilder(
         pageBuilder: (BuildContext context, Animation animation,
             Animation secondaryAnimation) {
-          return BreathRoute();
+          return SlideTransition(
+            position: animation.drive(
+                Tween(begin: Offset(0.0, 1.0), end: Offset.zero)
+                    .chain(CurveTween(curve: Curves.ease))),
+            child: BreathRoute(),
+          );
         },
-        settings: RouteSettings(arguments: map)));
+        settings: RouteSettings(arguments: map),
+        transitionDuration: Duration(milliseconds: 500)));
   }
 }

@@ -29,7 +29,6 @@ class _BreatheResultState extends State<BreatheResult> {
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              height: 109.pt,
               width: double.infinity,
               decoration: BoxDecoration(
                   image: DecorationImage(
@@ -102,10 +101,21 @@ class _BreatheResultState extends State<BreatheResult> {
   }
 
   void _restartBreath() {
+    Navigator.of(context).pop();
     Map<String, dynamic> map = Map();
     map.putIfAbsent("breathSource", () => BreathSource.home);
-    Navigator.of(context)
-        .popAndPushNamed(BreathRoute.breathRouteName, arguments: map);
+    Navigator.of(context).push(PageRouteBuilder(
+        pageBuilder: (BuildContext context, Animation animation,
+            Animation secondaryAnimation) {
+          return SlideTransition(
+            position: animation.drive(
+                Tween(begin: Offset(0.0, 1.0), end: Offset.zero)
+                    .chain(CurveTween(curve: Curves.ease))),
+            child: BreathRoute(),
+          );
+        },
+        settings: RouteSettings(arguments: map),
+        transitionDuration: Duration(milliseconds: 500)));
     ReportUtil.getInstance()
         .trackEvent(eventName: EventConstants.home_breathe_start_again);
   }

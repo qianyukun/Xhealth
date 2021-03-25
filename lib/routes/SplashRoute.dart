@@ -39,13 +39,23 @@ class _SplashRouteState extends State<SplashRoute> {
 
   ///跳转guide页面
   void navigateToGuide() {
-    Navigator.of(context).popAndPushNamed(GuideRoute.guideName);
+    Navigator.of(context).pop();
+    Navigator.of(context).push(PageRouteBuilder(pageBuilder:
+        (BuildContext context, Animation animation,
+        Animation secondaryAnimation) {
+      return GuideRoute();
+    }));
     _timer.cancel();
   }
 
   ///跳转Space页面
   void navigateToHome() {
-    Navigator.of(context).popAndPushNamed(HomeRoute.homeName);
+    Navigator.of(context).pop();
+    Navigator.of(context).push(PageRouteBuilder(pageBuilder:
+        (BuildContext context, Animation animation,
+        Animation secondaryAnimation) {
+      return HomeRoute();
+    }));
     _timer.cancel();
   }
 

@@ -91,18 +91,35 @@ class _BreatheFeelingCheckState extends State<BreatheFeelingCheck> {
   void _onBackPressed() {
     Map<String, dynamic> map = Map();
     map.putIfAbsent("scroll", () => 300.0);
+
+    ///从home页面过来
     if (fromHome == BreathSource.home) {
       Navigator.of(context).pop();
       Navigator.of(context).push(PageRouteBuilder(
           pageBuilder: (BuildContext context, Animation animation,
               Animation secondaryAnimation) {
-            return HomeRoute();
+            return SlideTransition(
+              position: secondaryAnimation.drive(
+                  Tween(begin: Offset(1.0, 0.0), end: Offset.zero)
+                      .chain(CurveTween(curve: Curves.ease))),
+              child: HomeRoute(),
+            );
           },
           settings: RouteSettings(arguments: map)));
     } else {
-      Navigator.of(context).pushNamedAndRemoveUntil(
-          HomeRoute.homeName, (route) => false,
-          arguments: map);
+      Navigator.of(context).pop();
+      Navigator.of(context).push(PageRouteBuilder(
+          pageBuilder: (BuildContext context, Animation animation,
+              Animation secondaryAnimation) {
+            return SlideTransition(
+              position: animation.drive(
+                  Tween(begin: Offset(0.0, 1.0), end: Offset.zero)
+                      .chain(CurveTween(curve: Curves.ease))),
+              child: HomeRoute(),
+            );
+          },
+          settings: RouteSettings(arguments: map),
+          transitionDuration: Duration(milliseconds: 500)));
     }
   }
 
@@ -139,7 +156,8 @@ class _BreatheFeelingCheckState extends State<BreatheFeelingCheck> {
             itemCount: breathResultFeelings.length,
             itemBuilder: (BuildContext context, int index) {
               return Container(
-                margin: EdgeInsets.symmetric(vertical: 10.pt, horizontal: 65.pt),
+                margin:
+                    EdgeInsets.symmetric(vertical: 10.pt, horizontal: 65.pt),
                 child: OutlinedButton(
                   onPressed: () {
                     setState(() {
@@ -157,7 +175,8 @@ class _BreatheFeelingCheckState extends State<BreatheFeelingCheck> {
                     )),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 15.pt, horizontal: 20.pt),
+                    padding: EdgeInsets.symmetric(
+                        vertical: 15.pt, horizontal: 20.pt),
                     child: Text(
                       breathResultFeelings[index].breatheFeelingText,
                       maxLines: 1,
@@ -184,9 +203,10 @@ class _BreatheFeelingCheckState extends State<BreatheFeelingCheck> {
       entity.breathFeelingId = breathResultFeelings[selectedPosition].id;
       dbHelper.updateMoodCheck(entity);
       Map<String, dynamic> map = Map();
-      map.putIfAbsent("feeling", () => breathResultFeelings[selectedPosition].breatheFeelingText);
-      ReportUtil.getInstance()
-          .trackEvent(eventName: EventConstants.secfeeling__choose,parameters: map);
+      map.putIfAbsent("feeling",
+          () => breathResultFeelings[selectedPosition].breatheFeelingText);
+      ReportUtil.getInstance().trackEvent(
+          eventName: EventConstants.secfeeling__choose, parameters: map);
     }
     _enterHome();
   }

@@ -68,12 +68,10 @@ class _BreathRouteState extends State<BreathRoute>
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              height: 109.pt,
               width: double.infinity,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage("imgs/breath/bg_bottom.png"),
-                      fit: BoxFit.cover)),
+              alignment: Alignment.bottomCenter,
+              child:
+                  Image.asset("imgs/breath/bg_bottom.png", fit: BoxFit.cover),
             ),
           ),
           SafeArea(
@@ -243,7 +241,7 @@ class _BreathRouteState extends State<BreathRoute>
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.pt, vertical: 10.pt),
           child: Text(
-            "Finish earlier",
+            "Finish Earlier",
             style: TextStyle(
                 color: Color(0xFF6274D2),
                 fontSize: 20.pt,
@@ -328,6 +326,8 @@ class _BreathRouteState extends State<BreathRoute>
   void _onFinishBreathe() {
     Navigator.of(context).pop();
     Map<String, dynamic> map = Map();
+
+    ///从自我测评进入
     if (moodCheckId != null && fromHome == BreathSource.selfAssessment) {
       map.putIfAbsent("moodCheckId", () => moodCheckId);
       Navigator.of(context).push(PageRouteBuilder(
@@ -337,15 +337,22 @@ class _BreathRouteState extends State<BreathRoute>
           },
           settings: RouteSettings(arguments: map)));
     } else if (_count > _totalCount) {
+      ///从其他入口进入，且完成了呼吸
       map.putIfAbsent("breathSource", () => fromHome);
       Navigator.of(context).push(PageRouteBuilder(
           pageBuilder: (BuildContext context, Animation animation,
               Animation secondaryAnimation) {
-            return BreatheResult();
+            return SlideTransition(
+              position: animation.drive(
+                  Tween(begin: Offset(0.0, 1.0), end: Offset.zero)
+                      .chain(CurveTween(curve: Curves.ease))),
+              child: BreatheResult(),
+            );
           },
-          settings: RouteSettings(arguments: map)));
+          settings: RouteSettings(arguments: map),
+          transitionDuration: Duration(milliseconds: 500)));
     } else {
-      Navigator.of(context).popAndPushNamed(HomeRoute.homeName);
+      ///直接关闭
     }
   }
 

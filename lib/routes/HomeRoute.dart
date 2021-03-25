@@ -112,11 +112,17 @@ class _HomeRouteState extends State<HomeRoute> {
 
   void _onSoundPlay() {
     ReportUtil.getInstance().trackEvent(eventName: EventConstants.sounds_click);
-    Navigator.of(context).push(PageRouteBuilder(pageBuilder:
-        (BuildContext context, Animation animation,
+    Navigator.of(context).push(PageRouteBuilder(
+        pageBuilder: (BuildContext context, Animation animation,
             Animation secondaryAnimation) {
-      return SoundRoute();
-    }));
+          return SlideTransition(
+            position: animation.drive(
+                Tween(begin: Offset(0.0, 1.0), end: Offset.zero)
+                    .chain(CurveTween(curve: Curves.ease))),
+            child: SoundRoute(),
+          );
+        },
+        transitionDuration: Duration(milliseconds: 500)));
   }
 
   void _onBreathing() {
@@ -124,14 +130,18 @@ class _HomeRouteState extends State<HomeRoute> {
         .trackEvent(eventName: EventConstants.breathing_click);
     Map<String, dynamic> map = Map();
     map.putIfAbsent("breathSource", () => BreathSource.home);
-    // Navigator.of(context)
-    //     .pushNamed(BreathRoute.breathRouteName, arguments: map);
 
     Navigator.of(context).push(PageRouteBuilder(
         pageBuilder: (BuildContext context, Animation animation,
             Animation secondaryAnimation) {
-          return BreathRoute();
+          return SlideTransition(
+            position: animation.drive(
+                Tween(begin: Offset(0.0, 1.0), end: Offset.zero)
+                    .chain(CurveTween(curve: Curves.ease))),
+            child: BreathRoute(),
+          );
         },
+        transitionDuration: Duration(milliseconds: 500),
         settings: RouteSettings(arguments: map)));
   }
 
@@ -186,7 +196,7 @@ class _HomeRouteState extends State<HomeRoute> {
                   padding:
                       EdgeInsets.symmetric(vertical: 9.2, horizontal: 20.13),
                   child: Text(
-                    "${DateFormat("EEEE,MMM d").format(DateTime.now())}",
+                    "${DateFormat("EEEE, MMM d").format(DateTime.now())}",
                     style: TextStyle(
                         color: const Color(0xFF333333),
                         fontSize: 16,
@@ -368,7 +378,7 @@ class _HomeRouteState extends State<HomeRoute> {
   buildMoodCheckItems(FlowModel flowModel) {
     String feelingText = flowModel.feeling.isPositive
         ? "I feel ${flowModel.feeling.feelingText}."
-        : "I feel ${flowModel.feeling.feelingText}, but I eliminate my negative thoughts.";
+        : "I feel ${flowModel.feeling.feelingText}, but I crushed my negative thoughts.";
     return Container(
       margin: EdgeInsets.all(4.5.pt),
       width: 151.pt,
@@ -424,7 +434,7 @@ class _HomeRouteState extends State<HomeRoute> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Mindful Moments",
+            "Mindful Moment",
             style: TextStyle(
                 fontSize: 20.pt,
                 color: const Color(0xFF000000),

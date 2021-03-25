@@ -42,10 +42,6 @@ class _SoundRouteState extends State<SoundRoute> {
   int bg_index = 0;
   final _playlist = [
     LoopingAudioSource(
-        child: AudioSource.uri(Uri.parse("asset:///audio/1 - beach.mp3"),
-            tag: AudioMetadata("Beach", "asset:///audio/1 - beach.mp3")),
-        count: 4),
-    LoopingAudioSource(
         child: AudioSource.uri(
             Uri.parse("asset:///audio/2 - Stream Flowing.mp3"),
             tag: AudioMetadata(
@@ -61,16 +57,6 @@ class _SoundRouteState extends State<SoundRoute> {
         child: AudioSource.uri(Uri.parse("asset:///audio/4 - Thunder.mp3"),
             tag: AudioMetadata("Thunder", "asset:///audio/4 - Thunder.mp3")),
         count: 30),
-    LoopingAudioSource(
-        child: AudioSource.uri(Uri.parse("asset:///audio/5 - Windy Forest.mp3"),
-            tag: AudioMetadata(
-                "Windy Forest", "asset:///audio/5 - Windy Forest.mp3")),
-        count: 4),
-    LoopingAudioSource(
-        child: AudioSource.uri(Uri.parse("asset:///audio/6-Magic Ocean.mp3"),
-            tag: AudioMetadata(
-                "Magic Ocean", "asset:///audio/6-Magic Ocean.mp3")),
-        count: 1),
     LoopingAudioSource(
         child: AudioSource.uri(
             Uri.parse("asset:///audio/7 - Walking in Snow.mp3"),
@@ -97,12 +83,6 @@ class _SoundRouteState extends State<SoundRoute> {
             tag: AudioMetadata("Crickets", "asset:///audio/11 - Crickets.mp3")),
         count: 14),
     LoopingAudioSource(
-        child: AudioSource.uri(
-            Uri.parse("asset:///audio/12 - Rain On Rooftop.mp3"),
-            tag: AudioMetadata(
-                "Rain On Rooftop", "asset:///audio/12 - Rain On Rooftop.mp3")),
-        count: 3),
-    LoopingAudioSource(
         child: AudioSource.uri(Uri.parse("asset:///audio/13 - Fire.mp3"),
             tag: AudioMetadata("Fire", "asset:///audio/13 - Fire.mp3")),
         count: 5),
@@ -117,7 +97,7 @@ class _SoundRouteState extends State<SoundRoute> {
     _player.setLoopMode(LoopMode.off);
     bg_index = Random(DateTime.now().millisecond).nextInt(bgList.length);
     _initPlayer();
-    autoInvisible = Timer(Duration(seconds: 5), () {
+    autoInvisible = Timer(Duration(seconds: 10), () {
       if (_player.playing) {
         if (panelVisible) {
           setState(() {
@@ -361,7 +341,7 @@ class _SoundRouteState extends State<SoundRoute> {
 
   void startAutoVisible() {
     autoInvisible?.cancel();
-    autoInvisible = Timer(Duration(seconds: 5), () {
+    autoInvisible = Timer(Duration(seconds: 10), () {
       if (_player.playing) {
         if (panelVisible) {
           setState(() {
