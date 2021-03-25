@@ -10,6 +10,7 @@ import 'package:health/routes/breath/BreathRoute.dart';
 import 'package:health/routes/selfAssessment/SelfAssessmentRoute.dart';
 import 'package:health/routes/sound/SoundRoute.dart';
 import 'package:health/routes/breath/BreathSource.dart';
+import 'package:health/widget/SlideVerticalWidget.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -112,17 +113,9 @@ class _HomeRouteState extends State<HomeRoute> {
 
   void _onSoundPlay() {
     ReportUtil.getInstance().trackEvent(eventName: EventConstants.sounds_click);
-    Navigator.of(context).push(PageRouteBuilder(
-        pageBuilder: (BuildContext context, Animation animation,
-            Animation secondaryAnimation) {
-          return SlideTransition(
-            position: animation.drive(
-                Tween(begin: Offset(0.0, 1.0), end: Offset.zero)
-                    .chain(CurveTween(curve: Curves.ease))),
-            child: SoundRoute(),
-          );
-        },
-        transitionDuration: Duration(milliseconds: 500)));
+    Navigator.of(context).push(SlideVerticalRoute(
+        child: SoundRoute(),
+    ));
   }
 
   void _onBreathing() {
@@ -130,19 +123,10 @@ class _HomeRouteState extends State<HomeRoute> {
         .trackEvent(eventName: EventConstants.breathing_click);
     Map<String, dynamic> map = Map();
     map.putIfAbsent("breathSource", () => BreathSource.home);
-
-    Navigator.of(context).push(PageRouteBuilder(
-        pageBuilder: (BuildContext context, Animation animation,
-            Animation secondaryAnimation) {
-          return SlideTransition(
-            position: animation.drive(
-                Tween(begin: Offset(0.0, 1.0), end: Offset.zero)
-                    .chain(CurveTween(curve: Curves.ease))),
-            child: BreathRoute(),
-          );
-        },
-        transitionDuration: Duration(milliseconds: 500),
-        settings: RouteSettings(arguments: map)));
+    Navigator.of(context).push(SlideVerticalRoute(
+        child: BreathRoute(),
+        settings: RouteSettings(arguments: map)
+    ));
   }
 
   initData() async {

@@ -6,6 +6,7 @@ import 'package:health/report/ReportUtil.dart';
 import 'package:health/routes/HomeRoute.dart';
 import 'package:health/routes/breath/BreathSource.dart';
 import 'package:health/routes/breath/BreatheResult.dart';
+import 'package:health/widget/SlideVerticalWidget.dart';
 
 import 'BreatheFeelingCheck.dart';
 import 'package:health/extension/ScreenExtension.dart';
@@ -339,18 +340,8 @@ class _BreathRouteState extends State<BreathRoute>
     } else if (_count > _totalCount) {
       ///从其他入口进入，且完成了呼吸
       map.putIfAbsent("breathSource", () => fromHome);
-      Navigator.of(context).push(PageRouteBuilder(
-          pageBuilder: (BuildContext context, Animation animation,
-              Animation secondaryAnimation) {
-            return SlideTransition(
-              position: animation.drive(
-                  Tween(begin: Offset(0.0, 1.0), end: Offset.zero)
-                      .chain(CurveTween(curve: Curves.ease))),
-              child: BreatheResult(),
-            );
-          },
-          settings: RouteSettings(arguments: map),
-          transitionDuration: Duration(milliseconds: 500)));
+      Navigator.of(context).push(SlideVerticalRoute(
+          child: BreatheResult(), settings: RouteSettings(arguments: map)));
     } else {
       ///直接关闭
     }

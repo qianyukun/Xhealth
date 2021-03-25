@@ -3,6 +3,7 @@ import 'package:health/common/EventConstants.dart';
 import 'package:health/db/DbHelper.dart';
 import 'package:health/report/ReportUtil.dart';
 import 'package:health/routes/breath/BreatheFeelingUtil.dart';
+import 'package:health/widget/SlideVerticalWidget.dart';
 import 'package:provider/provider.dart';
 
 import '../HomeRoute.dart';
@@ -93,33 +94,10 @@ class _BreatheFeelingCheckState extends State<BreatheFeelingCheck> {
     map.putIfAbsent("scroll", () => 300.0);
 
     ///从home页面过来
-    if (fromHome == BreathSource.home) {
+    if (fromHome == BreathSource.selfAssessment) {
       Navigator.of(context).pop();
-      Navigator.of(context).push(PageRouteBuilder(
-          pageBuilder: (BuildContext context, Animation animation,
-              Animation secondaryAnimation) {
-            return SlideTransition(
-              position: secondaryAnimation.drive(
-                  Tween(begin: Offset(1.0, 0.0), end: Offset.zero)
-                      .chain(CurveTween(curve: Curves.ease))),
-              child: HomeRoute(),
-            );
-          },
-          settings: RouteSettings(arguments: map)));
-    } else {
-      Navigator.of(context).pop();
-      Navigator.of(context).push(PageRouteBuilder(
-          pageBuilder: (BuildContext context, Animation animation,
-              Animation secondaryAnimation) {
-            return SlideTransition(
-              position: animation.drive(
-                  Tween(begin: Offset(0.0, 1.0), end: Offset.zero)
-                      .chain(CurveTween(curve: Curves.ease))),
-              child: HomeRoute(),
-            );
-          },
-          settings: RouteSettings(arguments: map),
-          transitionDuration: Duration(milliseconds: 500)));
+      Navigator.of(context).push(SlideVerticalRoute(
+          child: HomeRoute(), settings: RouteSettings(arguments: map)));
     }
   }
 

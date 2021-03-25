@@ -7,6 +7,7 @@ import 'package:health/report/ReportUtil.dart';
 import 'package:health/routes/breath/BreathRoute.dart';
 import 'package:health/routes/breath/BreathSource.dart';
 import 'package:health/routes/sandTable/SandTableScene.dart';
+import 'package:health/widget/SlideVerticalWidget.dart';
 import 'package:provider/provider.dart';
 import 'package:health/extension/ScreenExtension.dart';
 
@@ -288,17 +289,7 @@ class _SandTableDetailPageState extends State<SandTableDetailPage>
     map.putIfAbsent("moodCheckId", () => widget.moodCheckId);
     map.putIfAbsent("breathSource", () => BreathSource.selfAssessment);
     Navigator.of(context).pop();
-    Navigator.of(context).push(PageRouteBuilder(
-        pageBuilder: (BuildContext context, Animation animation,
-            Animation secondaryAnimation) {
-          return SlideTransition(
-            position: animation.drive(
-                Tween(begin: Offset(0.0, 1.0), end: Offset.zero)
-                    .chain(CurveTween(curve: Curves.ease))),
-            child: BreathRoute(),
-          );
-        },
-        settings: RouteSettings(arguments: map),
-        transitionDuration: Duration(milliseconds: 500)));
+    Navigator.of(context).push(SlideVerticalRoute(
+        child: BreathRoute(), settings: RouteSettings(arguments: map)));
   }
 }

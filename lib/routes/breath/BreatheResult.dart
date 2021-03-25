@@ -4,6 +4,7 @@ import 'package:health/report/ReportUtil.dart';
 import 'package:health/routes/breath/BreathRoute.dart';
 import 'package:health/routes/breath/BreathSource.dart';
 import 'package:health/extension/ScreenExtension.dart';
+import 'package:health/widget/SlideVerticalWidget.dart';
 
 class BreatheResult extends StatefulWidget {
   static const String breatheResultName = "/breatheResult";
@@ -104,18 +105,8 @@ class _BreatheResultState extends State<BreatheResult> {
     Navigator.of(context).pop();
     Map<String, dynamic> map = Map();
     map.putIfAbsent("breathSource", () => BreathSource.home);
-    Navigator.of(context).push(PageRouteBuilder(
-        pageBuilder: (BuildContext context, Animation animation,
-            Animation secondaryAnimation) {
-          return SlideTransition(
-            position: animation.drive(
-                Tween(begin: Offset(0.0, 1.0), end: Offset.zero)
-                    .chain(CurveTween(curve: Curves.ease))),
-            child: BreathRoute(),
-          );
-        },
-        settings: RouteSettings(arguments: map),
-        transitionDuration: Duration(milliseconds: 500)));
+    Navigator.of(context).push(SlideVerticalRoute(
+        child: BreathRoute(), settings: RouteSettings(arguments: map)));
     ReportUtil.getInstance()
         .trackEvent(eventName: EventConstants.home_breathe_start_again);
   }
