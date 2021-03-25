@@ -273,6 +273,7 @@ class _SoundRouteState extends State<SoundRoute> {
     }
     startAutoVisible();
     try {
+      _reportSoundPlayedDuration();
       ReportUtil.getInstance()
           .trackEvent(eventName: EventConstants.sounds_next);
       playlistPosition = Duration();
@@ -296,6 +297,7 @@ class _SoundRouteState extends State<SoundRoute> {
     }
     startAutoVisible();
     try {
+      _reportSoundPlayedDuration();
       ReportUtil.getInstance()
           .trackEvent(eventName: EventConstants.sounds_previous);
       playlistPosition = Duration();
@@ -314,6 +316,7 @@ class _SoundRouteState extends State<SoundRoute> {
   }
 
   _retryAudio() async {
+    _reportSoundPlayedDuration();
     try {
       playlistPosition = Duration();
       playlistBufferedPosition = Duration();
@@ -329,8 +332,9 @@ class _SoundRouteState extends State<SoundRoute> {
 
   @override
   void dispose() {
-    autoInvisible?.cancel();
+    _reportSoundPlayedDuration();
     _player.dispose();
+    autoInvisible?.cancel();
     super.dispose();
   }
 
@@ -350,6 +354,21 @@ class _SoundRouteState extends State<SoundRoute> {
         }
       }
     });
+  }
+
+  void _reportSoundPlayedDuration() {
+    Map<String, dynamic> map = Map();
+    try {
+      map.putIfAbsent(
+          "name",
+          () => (_playlist[currentPlaylistIndex % _playlist.length]
+                  .sequence[0]
+                  .tag as AudioMetadata)
+              .title);
+    } catch (e) {}
+    map.putIfAbsent("duration", () => lastPosition.inMilliseconds);
+    ReportUtil.getInstance()
+        .trackEvent(eventName: EventConstants.sounds_duration, parameters: map);
   }
 }
 

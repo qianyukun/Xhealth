@@ -26,11 +26,13 @@ class EventConstants{
   static const String sounds_pause ="sounds_pause";
   static const String sounds_next ="sounds_next";
   static const String sounds_previous ="sounds_previous";
+  static const String sounds_duration ="sounds_duration";
 
   static const String breathing_click ="breathing_click";
   static const String home_breathe_back ="home_breathe_back";
   static const String home_breathe_finishealrlier ="home_breathe_finishealrlier";
   static const String home_breathe_start_again ="home_breathe_start_again";
+  static const String breath_duration ="breath_duration";
 
   static const String app_enter ="app_enter";
   static const String app_out ="app_out";

@@ -320,11 +320,10 @@ class _BreathRouteState extends State<BreathRoute>
           .trackEvent(eventName: EventConstants.cards_breathe_off);
     }
     _onFinishBreathe();
-    // Navigator.of(context)
-    //     .pushNamedAndRemoveUntil(HomeRoute.homeName, (route) => false);
   }
 
   void _onFinishBreathe() {
+    _reportBreathPlayedDuration();
     Navigator.of(context).pop();
     Map<String, dynamic> map = Map();
 
@@ -356,5 +355,14 @@ class _BreathRouteState extends State<BreathRoute>
           .trackEvent(eventName: EventConstants.cards_breathe_finishealrlier);
     }
     _onFinishBreathe();
+  }
+
+  void _reportBreathPlayedDuration() {
+    Map<String, dynamic> map = Map();
+    map.putIfAbsent(
+        "source", () => fromHome == BreathSource.home ? "home" : "check");
+    map.putIfAbsent("duration", () => _count);
+    ReportUtil.getInstance()
+        .trackEvent(eventName: EventConstants.breath_duration, parameters: map);
   }
 }

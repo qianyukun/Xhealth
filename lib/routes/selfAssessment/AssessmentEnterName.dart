@@ -60,8 +60,10 @@ class _AssessmentEnterName extends State<AssessmentEnterName> {
                 controller: nickNameController,
                 maxLines: 1,
                 maxLength: 12,
-                decoration:
-                    InputDecoration(hintText: "Your Nickname", counterText: "",hintStyle: TextStyle(color: Color(0xFFD1D2D7))),
+                decoration: InputDecoration(
+                    hintText: "Your Nickname",
+                    counterText: "",
+                    hintStyle: TextStyle(color: Color(0xFFD1D2D7))),
                 style: TextStyle(
                     fontSize: 24.pt,
                     fontWeight: FontWeight.w500,
@@ -85,7 +87,10 @@ class _AssessmentEnterName extends State<AssessmentEnterName> {
                     children: [
                       Text(
                         "Sweet",
-                        style: TextStyle(fontSize: 20.pt, color: Colors.white,fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                            fontSize: 20.pt,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600),
                       ),
                       Icon(
                         Icons.arrow_forward,
@@ -112,7 +117,10 @@ class _AssessmentEnterName extends State<AssessmentEnterName> {
 
   onNext() async {
     if (checkNickName()) {
-      ReportUtil.getInstance().trackEvent(eventName: EventConstants.nickname_next);
+      Map<String, dynamic> map = Map();
+      map.putIfAbsent("name", () => nickNameController.text.trim());
+      ReportUtil.getInstance()
+          .trackEvent(eventName: EventConstants.nickname_next, parameters: map);
       Global.getPref().setStorage(
           AssessmentEnterName.nickName, nickNameController.text.trim());
       widget.onFinishEnterName();

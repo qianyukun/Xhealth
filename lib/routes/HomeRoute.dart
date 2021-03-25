@@ -113,9 +113,8 @@ class _HomeRouteState extends State<HomeRoute> {
 
   void _onSoundPlay() {
     ReportUtil.getInstance().trackEvent(eventName: EventConstants.sounds_click);
-    Navigator.of(context).push(SlideVerticalRoute(
-        child: SoundRoute(),
-    ));
+    Navigator.of(context).push(
+        SlideVerticalRoute(child: SoundRoute(), settings: RouteSettings()));
   }
 
   void _onBreathing() {
@@ -124,9 +123,7 @@ class _HomeRouteState extends State<HomeRoute> {
     Map<String, dynamic> map = Map();
     map.putIfAbsent("breathSource", () => BreathSource.home);
     Navigator.of(context).push(SlideVerticalRoute(
-        child: BreathRoute(),
-        settings: RouteSettings(arguments: map)
-    ));
+        child: BreathRoute(), settings: RouteSettings(arguments: map)));
   }
 
   initData() async {

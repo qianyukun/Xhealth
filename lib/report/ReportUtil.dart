@@ -9,6 +9,7 @@ class ReportUtil {
   static FirebaseAnalytics _analytics = FirebaseAnalytics();
   static FirebaseAnalyticsObserver _observer =
       FirebaseAnalyticsObserver(analytics: _analytics);
+  bool isReleaseMode = const bool.fromEnvironment("dart.vm.product");
 
   FirebaseAnalytics get firebaseAnalytics => _analytics;
 
@@ -29,6 +30,11 @@ class ReportUtil {
 
   Future<void> trackEvent(
       {@required String eventName, Map<String, dynamic> parameters}) async {
+    if (!isReleaseMode) {
+      print(eventName +
+          " " +
+          ((parameters != null) ? parameters.toString() : ""));
+    }
     await _analytics.logEvent(name: eventName, parameters: parameters);
   }
 }
