@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:health/Utils.dart';
 import 'package:health/common/EventConstants.dart';
 import 'package:health/db/DbHelper.dart';
 import 'package:health/db/models/FlowModel.dart';
@@ -8,8 +9,10 @@ import 'package:health/routes/breath/BreathRoute.dart';
 import 'package:health/routes/breath/BreathSource.dart';
 import 'package:health/routes/sandTable/SandTableScene.dart';
 import 'package:health/widget/SlideVerticalWidget.dart';
+import 'package:health/widget/scratch_card_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:health/extension/ScreenExtension.dart';
+import 'dart:ui' as ui;
 
 class SandTableDetailRoute extends StatelessWidget {
   static const String sandTableDetailName = "/sandTableDetail";
@@ -72,6 +75,7 @@ class _SandTableDetailPageState extends State<SandTableDetailPage>
 
   AnimationController _btnAnimationController;
   Animation<double> _btnAnimation;
+  ui.Image _image;
 
   @override
   void initState() {
@@ -97,6 +101,10 @@ class _SandTableDetailPageState extends State<SandTableDetailPage>
               .chain(CurveTween(curve: Curves.linear)),
           weight: 25),
     ]).animate(_btnAnimationController);
+    Utils.getImage(widget.sandTableScene.imgUrl, 300, 216).then((image) {
+      _image = image;
+      setState(() {});
+    });
   }
 
   @override
@@ -149,45 +157,79 @@ class _SandTableDetailPageState extends State<SandTableDetailPage>
                     ),
                     Expanded(
                       child: Container(
-                        height: 300.pt,
-                        width: 216.pt,
-                        alignment: Alignment.center,
-                        child: GestureDetector(
-                          onTap: _onNext,
-                          child: Hero(
-                            tag: args.sceneName,
-                            child: Card(
-                              elevation: 4,
-                              shadowColor: Colors.black26,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadiusDirectional.circular(10.pt)),
-                              clipBehavior: Clip.antiAlias,
-                              child: Image.asset(args.imgUrl),
-                            ),
-                          ),
-                        ),
-                      ),
-                      flex: 3,
+                          alignment: Alignment.center,
+                          child: ScratchCardWidget(
+                              strokeWidth: 40,
+                              threshold: 0.15,
+                              foreground: (canvas, size, offset) {
+                                if (_image != null) {
+                                  double scale;
+                                  double dx = 0;
+                                  double dy = 0;
+                                  if (_image.width * size.height >
+                                      size.width * _image.height) {
+                                    scale = size.height / _image.height;
+                                    dx =
+                                        (size.width - _image.width * scale) / 2;
+                                  } else {
+                                    scale = size.width / _image.width;
+                                    dy = (size.height - _image.height * scale) /
+                                        2;
+                                  }
+                                  scale = 1;
+                                  dx = (size.width - _image.width * scale) / 2;
+                                  dy =
+                                      (size.height - _image.height * scale) / 2;
+
+                                  canvas.save();
+                                  canvas.translate(dx, dy);
+                                  canvas.scale(scale, scale);
+                                  canvas.clipRRect(
+                                      RRect.fromRectXY(
+                                          Rect.fromLTWH(
+                                              0,
+                                              0,
+                                              _image.width * scale,
+                                              _image.height * scale),
+                                          20.pt,
+                                          20.pt),
+                                      doAntiAlias: false);
+                                  canvas.drawImage(
+                                      _image, Offset(0, 0), new Paint());
+                                  canvas.restore();
+                                } else {
+                                  canvas.drawRRect(
+                                      RRect.fromLTRBR(0, 0, size.width,
+                                          size.height, Radius.circular(20.pt)),
+                                      Paint()..color = Colors.grey);
+                                }
+                              },
+                              onFinish: () {
+                                _onNext();
+                              },
+                              child: Container(
+                                height: 450.pt,
+                                width: 300.pt,
+                                // color: Colors.blueAccent,
+                                alignment: Alignment.center,
+                              ))),
+                      flex: 4,
                     ),
                     Expanded(
                       child: Container(
                         alignment: Alignment.center,
                         // margin: EdgeInsets.only(top: 81.pt),
-                        child: GestureDetector(
-                          onTap: _onNext,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 80.pt, vertical: 10.pt),
-                            child: FadeTransition(
-                              opacity: _btnAnimation,
-                              child: Text(
-                                "Tap Card",
-                                style: TextStyle(
-                                    fontSize: 20.pt,
-                                    color: Color(0xFF999999),
-                                    fontWeight: FontWeight.w400),
-                              ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 80.pt, vertical: 10.pt),
+                          child: FadeTransition(
+                            opacity: _btnAnimation,
+                            child: Text(
+                              "Scratch off to erase",
+                              style: TextStyle(
+                                  fontSize: 20.pt,
+                                  color: Color(0xFF999999),
+                                  fontWeight: FontWeight.w400),
                             ),
                           ),
                         ),

@@ -34,6 +34,7 @@ class ReportUtil {
       print(eventName +
           " " +
           ((parameters != null) ? parameters.toString() : ""));
+      return ;
     }
     await _analytics.logEvent(name: eventName, parameters: parameters);
   }

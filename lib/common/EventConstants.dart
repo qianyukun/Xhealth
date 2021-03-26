@@ -15,7 +15,7 @@ class EventConstants{
   static const String cards_next ="cards_next";
   static const String cards_tap ="cards_tap";
 
-  static const String cards_breathe_off ="relax_next";
+  static const String cards_breathe_off ="cards_breathe_off";
   static const String cards_breathe_finishealrlier ="cards_breathe_finishealrlier";
   static const String secfeeling__choose ="secfeeling__choose";
 

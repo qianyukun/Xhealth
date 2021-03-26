@@ -31,7 +31,7 @@ class SandTableSceneUtil {
             id: 3,
             sourceId: "oh-cards-14",
             imgUrl: "imgs/sandtable/ohcards_l_14.png",
-            sceneName: "Uwirl"),
+            sceneName: "Swirl"),
         SandTableScene(
             id: 4,
             sourceId: "oh-cards-15",
