@@ -13,6 +13,7 @@ import 'package:health/routes/breath/BreathSource.dart';
 import 'package:health/widget/SlideVerticalWidget.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'selfAssessment/AssessmentEnterName.dart';
 import 'package:health/extension/ScreenExtension.dart';
@@ -126,6 +127,14 @@ class _HomeRouteState extends State<HomeRoute> {
         child: BreathRoute(), settings: RouteSettings(arguments: map)));
   }
 
+  void _onFeedback() async {
+    await canLaunch(
+            "https://docs.google.com/forms/d/e/1FAIpQLScljCi90h2S95rlwvadRMQplNjPxZkqgbZCyBM_jL-XJCsDfw/viewform?usp=sf_link")
+        ? await launch(
+            "https://docs.google.com/forms/d/e/1FAIpQLScljCi90h2S95rlwvadRMQplNjPxZkqgbZCyBM_jL-XJCsDfw/viewform?usp=sf_link")
+        : {};
+  }
+
   initData() async {
     nickName = await Global.getPref().getStorage(AssessmentEnterName.nickName);
     isDay = DateTime.now().hour <= 20 && DateTime.now().hour >= 8;
@@ -153,36 +162,78 @@ class _HomeRouteState extends State<HomeRoute> {
       children: [
         Container(
           color: _timeColor.withAlpha(alpha),
-          child: Column(
+          child: Stack(
             children: [
-              Container(
-                width: double.infinity,
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      left: 20.13,
-                      top: 12.35 + MediaQuery.of(context).padding.top,
-                      right: 20.13),
-                  child: Text(
-                    "Hi,$nickName",
-                    style: TextStyle(
-                        color: const Color(0xFF333333),
-                        fontSize: 28,
-                        fontWeight: FontWeight.w600),
+              Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          left: 20.13,
+                          top: 12.35 + MediaQuery.of(context).padding.top,
+                          right: 20.13),
+                      child: Text(
+                        "Hi,$nickName",
+                        style: TextStyle(
+                            color: const Color(0xFF333333),
+                            fontSize: 28,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
                   ),
-                ),
+                  Container(
+                    width: double.infinity,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 9.2, horizontal: 20.13),
+                      child: Text(
+                        "${DateFormat("EEEE, MMM d").format(DateTime.now())}",
+                        style: TextStyle(
+                            color: const Color(0xFF333333),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                  )
+                ],
               ),
               Container(
-                width: double.infinity,
-                child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 9.2, horizontal: 20.13),
-                  child: Text(
-                    "${DateFormat("EEEE, MMM d").format(DateTime.now())}",
-                    style: TextStyle(
-                        color: const Color(0xFF333333),
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500),
-                  ),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      child: Container(
+                        alignment: Alignment.topRight,
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              top:
+                                  12.35.pt + MediaQuery.of(context).padding.top,
+                              left: 20.pt,
+                              right: 35.13.pt,
+                              bottom: 10.pt),
+                          child: Image.asset("imgs/home/ic_feedback.png"),
+                        ),
+                      ),
+                      onTap: _onFeedback,
+                    ),
+                    GestureDetector(
+                      child: Container(
+                        alignment: Alignment.topRight,
+                        width: double.infinity,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20.13),
+                          child: Text(
+                            "Feedback",
+                            style: TextStyle(
+                                color: const Color(0xFFFFFFFF).withOpacity(0.7),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
+                      onTap: _onFeedback,
+                    )
+                  ],
                 ),
               )
             ],

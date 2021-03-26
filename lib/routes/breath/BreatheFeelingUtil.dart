@@ -19,7 +19,7 @@ class BreatheFeelingUtil {
       _feelings = [
         BreatheFeeling(1, "Better"),
         BreatheFeeling(2, "Same as before"),
-        BreatheFeeling(3, "Worse than before"),
+        BreatheFeeling(3, "Worse"),
       ];
     }
     return _feelings;

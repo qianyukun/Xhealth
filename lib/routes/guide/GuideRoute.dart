@@ -47,21 +47,24 @@ class _GuideRouteState extends State<GuideRoute> {
               controller: _pageBgController,
               itemBuilder: (context, index) {
                 var bgCurrentLeftPageIndex = topPageOffset.floor();
-                bgCurrentPageOffsetPercent = topPageOffset - bgCurrentLeftPageIndex;
+                bgCurrentPageOffsetPercent =
+                    topPageOffset - bgCurrentLeftPageIndex;
                 return Transform.translate(
                   offset: Offset((topPageOffset - index) * screenWidth, 0),
                   child: Opacity(
                     opacity: bgCurrentLeftPageIndex == index
                         ? 1 - bgCurrentPageOffsetPercent
                         : bgCurrentPageOffsetPercent,
-                    child: Container(
-                      child: Image.asset(bannerData[index].bannerUrl,
-                          fit: BoxFit.cover),
-                    ),
+                    child: index == bannerData.length
+                        ? _buildFeedbackGuide()
+                        : Container(
+                            child: Image.asset(bannerData[index].bannerUrl,
+                                fit: BoxFit.cover),
+                          ),
                   ),
                 );
               },
-              itemCount: bannerData.length,
+              itemCount: bannerData.length + 1,
             ),
           ),
           Container(
@@ -70,7 +73,7 @@ class _GuideRouteState extends State<GuideRoute> {
               itemBuilder: (context, index) {
                 return _buildGuidePage(index);
               },
-              itemCount: bannerData.length,
+              itemCount: bannerData.length + 1,
               controller: _pageController,
             ),
           ),
@@ -102,6 +105,29 @@ class _GuideRouteState extends State<GuideRoute> {
   }
 
   Widget _buildGuidePage(int index) {
+    if (index == 3) {
+      return Container(
+        width: double.infinity,
+        margin: EdgeInsets.only(bottom: 225.pt),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 16.pt, horizontal: 26.pt),
+              child: Text(
+                "We are still at an early stage of developing FLOW. Your feedback is greatly appreciated and very important to us. Free feel to try it out any time. Also, stay tune for more amazing features.😃",
+                textAlign: TextAlign.center,
+                strutStyle: StrutStyle(leading: 1.4),
+                style: TextStyle(
+                    color: Color(0xFF999999),
+                    fontSize: 16.pt,
+                    fontWeight: FontWeight.w400),
+              ),
+            )
+          ],
+        ),
+      );
+    }
     return Container(
       width: double.infinity,
       margin: EdgeInsets.only(bottom: 225.pt),
@@ -152,7 +178,7 @@ class _GuideRouteState extends State<GuideRoute> {
               padding: EdgeInsets.only(bottom: 31.pt),
               child: SmoothPageIndicator(
                 controller: _pageController,
-                count: bannerData.length,
+                count: bannerData.length + 1,
                 effect: SwapEffect(
                     dotColor: Colors.white.withOpacity(0.2),
                     activeDotColor: Colors.white,
@@ -168,7 +194,8 @@ class _GuideRouteState extends State<GuideRoute> {
                       MaterialStateProperty.all(Color(0xFF6F86FF))),
               onPressed: onNext,
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30.pt, vertical: 8.pt),
+                padding:
+                    EdgeInsets.symmetric(horizontal: 30.pt, vertical: 8.pt),
                 child: Text(
                   "Get started",
                   style: TextStyle(
@@ -198,5 +225,34 @@ class _GuideRouteState extends State<GuideRoute> {
             Animation secondaryAnimation) {
       return SelfAssessmentRoute();
     }));
+  }
+
+  _buildFeedbackGuide() {
+    return Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("imgs/splash/bg_splash.jpg"),
+                fit: BoxFit.cover)),
+        child: Column(
+          children: [
+            Expanded(
+              child: Container(
+                alignment: Alignment.center,
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16.pt),
+                    child: Image.asset(
+                      "imgs/appicon/ic_launcher_512x512.png",
+                      height: 90.pt,
+                      width: 90.pt,
+                    )),
+              ),
+              flex: 8,
+            ),
+            Expanded(
+              child: Container(),
+              flex: 5,
+            )
+          ],
+        ));
   }
 }

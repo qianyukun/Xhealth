@@ -42,7 +42,7 @@ class _SplashRouteState extends State<SplashRoute> {
     Navigator.of(context).pop();
     Navigator.of(context).push(PageRouteBuilder(pageBuilder:
         (BuildContext context, Animation animation,
-        Animation secondaryAnimation) {
+            Animation secondaryAnimation) {
       return GuideRoute();
     }));
     _timer.cancel();
@@ -53,7 +53,7 @@ class _SplashRouteState extends State<SplashRoute> {
     Navigator.of(context).pop();
     Navigator.of(context).push(PageRouteBuilder(pageBuilder:
         (BuildContext context, Animation animation,
-        Animation secondaryAnimation) {
+            Animation secondaryAnimation) {
       return HomeRoute();
     }));
     _timer.cancel();
