@@ -220,11 +220,12 @@ class _GuideRouteState extends State<GuideRoute> {
 
   void onNext() {
     Navigator.of(context).pop();
-    Navigator.of(context).push(PageRouteBuilder(pageBuilder:
-        (BuildContext context, Animation animation,
+    Navigator.of(context).push(PageRouteBuilder(
+        pageBuilder: (BuildContext context, Animation animation,
             Animation secondaryAnimation) {
-      return SelfAssessmentRoute();
-    }));
+          return SelfAssessmentRoute();
+        },
+        settings: RouteSettings()));
   }
 
   _buildFeedbackGuide() {

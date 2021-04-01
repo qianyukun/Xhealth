@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:health/common/EventConstants.dart';
 import 'package:health/report/ReportUtil.dart';
-import 'package:health/routes/HomeRoute.dart';
 import 'package:health/routes/breath/BreathSource.dart';
 import 'package:health/routes/breath/BreatheResult.dart';
 import 'package:health/widget/SlideVerticalWidget.dart';
@@ -54,7 +53,7 @@ class _BreathRouteState extends State<BreathRoute>
 
   @override
   Widget build(BuildContext context) {
-    var arguments = ModalRoute.of(context)?.settings.arguments;
+    var arguments = ModalRoute.of(context)?.settings?.arguments;
     final Map<String, dynamic> args = arguments as Map<String, dynamic>;
     if (args.containsKey("breathSource")) {
       fromHome = args["breathSource"];

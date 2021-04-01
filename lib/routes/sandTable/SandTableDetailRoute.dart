@@ -21,7 +21,7 @@ class SandTableDetailRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var arguments = ModalRoute.of(context)?.settings.arguments;
+    var arguments = ModalRoute.of(context)?.settings?.arguments;
     final Map<String, dynamic> args = arguments as Map<String, dynamic>;
     if (args.containsKey("moodCheckId") && args.containsKey("scene")) {
       sandTableScene = args["scene"];

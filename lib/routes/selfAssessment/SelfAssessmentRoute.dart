@@ -91,7 +91,7 @@ class _SelfAssessmentRouteState extends State<SelfAssessmentRoute> {
       alignment: Alignment.centerLeft,
       child: !(totalCheckCount == 3 && currentPosition == 0)
           ? Padding(
-              padding: EdgeInsets.only(left: 10),
+              padding: EdgeInsets.only(left: 10.pt),
               child: IconButton(
                 icon: Image.asset("imgs/common/bt_back.png"),
                 onPressed: _onBackPress,
@@ -120,11 +120,11 @@ class _SelfAssessmentRouteState extends State<SelfAssessmentRoute> {
     }
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.symmetric(horizontal: 19),
-      height: 4,
+      margin: EdgeInsets.symmetric(horizontal: 19.pt),
+      height: 4.pt,
       child: GradientLinearProgressBar(
         value: value,
-        strokeWidth: 4,
+        strokeWidth: 4.pt,
         strokeCapRound: true,
         colors: [Color(0xFF6F86FF), Color(0xFF6F86FF)],
         backgroundColor: Color(0x0d000000),

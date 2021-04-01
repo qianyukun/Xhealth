@@ -21,7 +21,6 @@ import 'sandTable/SandTableRoute.dart';
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    ReportUtil.getInstance().trackEvent(eventName: EventConstants.app_enter);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(

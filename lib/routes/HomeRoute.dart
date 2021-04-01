@@ -57,7 +57,7 @@ class _HomeRouteState extends State<HomeRoute> {
 
   @override
   Widget build(BuildContext context) {
-    var arguments = ModalRoute.of(context)?.settings.arguments;
+    var arguments = ModalRoute.of(context)?.settings?.arguments;
     if (arguments != null) {
       final Map<String, dynamic> args = arguments as Map<String, dynamic>;
       if (args.containsKey("scroll")) {

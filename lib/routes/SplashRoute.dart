@@ -7,7 +7,6 @@ import 'package:health/routes/HomeRoute.dart';
 import 'package:health/routes/splash/SplashPage.dart';
 
 import 'guide/GuideRoute.dart';
-import 'package:health/extension/ScreenExtension.dart';
 
 class SplashRoute extends StatefulWidget {
   static const String splashName = "/splash";
@@ -40,22 +39,24 @@ class _SplashRouteState extends State<SplashRoute> {
   ///跳转guide页面
   void navigateToGuide() {
     Navigator.of(context).pop();
-    Navigator.of(context).push(PageRouteBuilder(pageBuilder:
-        (BuildContext context, Animation animation,
+    Navigator.of(context).push(PageRouteBuilder(
+        pageBuilder: (BuildContext context, Animation animation,
             Animation secondaryAnimation) {
-      return GuideRoute();
-    }));
+          return GuideRoute();
+        },
+        settings: RouteSettings()));
     _timer.cancel();
   }
 
   ///跳转Space页面
   void navigateToHome() {
     Navigator.of(context).pop();
-    Navigator.of(context).push(PageRouteBuilder(pageBuilder:
-        (BuildContext context, Animation animation,
+    Navigator.of(context).push(PageRouteBuilder(
+        pageBuilder: (BuildContext context, Animation animation,
             Animation secondaryAnimation) {
-      return HomeRoute();
-    }));
+          return HomeRoute();
+        },
+        settings: RouteSettings()));
     _timer.cancel();
   }
 

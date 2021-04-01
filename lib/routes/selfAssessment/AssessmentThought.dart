@@ -14,7 +14,7 @@ class AssessmentThought extends StatefulWidget {
   final OnFinishSelectThoughts onFinishSelectThought;
   final OnFinishSelectThoughts onPreSelectThought;
   final isFeelingGood;
-  List<Thought> initThoughts = [];
+  var initThoughts = <Thought>[];
 
   AssessmentThought(
       {Key key,
@@ -31,15 +31,15 @@ class AssessmentThought extends StatefulWidget {
 }
 
 class _AssessmentThoughtState extends State<AssessmentThought> {
-  List<Thought> thoughts = [];
-  Set<Thought> selectedThoughts = new Set();
+  var thoughts = <Thought>[];
+  var selectedThoughts = <Thought>{};
 
   bool isFeelingGood;
   Future<List<Thought>> thoughtFuture;
 
   _AssessmentThoughtState(this.isFeelingGood);
 
-  List<String> selectedBg = [
+  var selectedBg = <String>[
     "imgs/thought/icon_feel_l1_selected.png",
     "imgs/thought/icon_feel_l2_selected.png",
     "imgs/thought/icon_feel_l3_selected.png",
@@ -49,7 +49,7 @@ class _AssessmentThoughtState extends State<AssessmentThought> {
     "imgs/thought/icon_feel_r3_selected.png",
     "imgs/thought/icon_feel_r4_selected.png",
   ];
-  List<String> unselectedBg = [
+  var unselectedBg = <String>[
     "imgs/thought/icon_feel_l1_unselect.png",
     "imgs/thought/icon_feel_l2_unselect.png",
     "imgs/thought/icon_feel_l3_unselect.png",
@@ -158,9 +158,11 @@ class _AssessmentThoughtState extends State<AssessmentThought> {
                           selectedThoughts.add(thoughts[index]);
                           widget.onPreSelectThought(selectedThoughts.toList());
                           Map<String, dynamic> map = Map();
-                          map.putIfAbsent("thought", () => thoughts[index].thoughtAdj);
-                          ReportUtil.getInstance()
-                              .trackEvent(eventName: EventConstants.thoughts_choose,parameters: map);
+                          map.putIfAbsent(
+                              "thought", () => thoughts[index].thoughtAdj);
+                          ReportUtil.getInstance().trackEvent(
+                              eventName: EventConstants.thoughts_choose,
+                              parameters: map);
                         }
                       });
                     },

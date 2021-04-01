@@ -151,7 +151,7 @@ class _SoundRouteState extends State<SoundRoute> {
                 child: Align(
               alignment: Alignment.topRight,
               child: IconButton(
-                iconSize: 54,
+                iconSize: 54.pt,
                 icon: Image.asset("imgs/common/bt_close_white.png"),
                 onPressed: _onBackPress,
               ),
@@ -229,7 +229,7 @@ class _SoundRouteState extends State<SoundRoute> {
               child: Container(
                   alignment: Alignment.topCenter,
                   width: double.infinity,
-                  margin: EdgeInsets.only(top: 128),
+                  margin: EdgeInsets.only(top: 128.pt),
                   child: Column(
                     children: [
                       Expanded(
@@ -238,7 +238,7 @@ class _SoundRouteState extends State<SoundRoute> {
                             metadata.title,
                             style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 24,
+                                fontSize: 24.pt,
                                 fontWeight: FontWeight.w600),
                           )),
                       Expanded(
