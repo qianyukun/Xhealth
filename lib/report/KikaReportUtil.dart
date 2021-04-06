@@ -44,7 +44,7 @@ class KikaReportUtil {
       if (sb.length > 0) {
         sb += ",";
       }
-      sb += "\\\"$key\\\":\\\"$value\\\"";
+      sb += "\"$key\":\"$value\"";
     });
     return "{" + sb + "}";
   }

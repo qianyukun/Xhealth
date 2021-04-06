@@ -37,4 +37,6 @@ class EventConstants{
   static const String app_enter ="app_enter";
   static const String app_out ="app_out";
 
+  static const String feedback_click ="feedback_click";
+
 }

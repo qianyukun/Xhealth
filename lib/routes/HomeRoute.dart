@@ -128,6 +128,7 @@ class _HomeRouteState extends State<HomeRoute> {
   }
 
   void _onFeedback() async {
+    ReportUtil.getInstance().trackEvent(eventName: EventConstants.feedback_click);
     await canLaunch(
             "https://docs.google.com/forms/d/e/1FAIpQLScljCi90h2S95rlwvadRMQplNjPxZkqgbZCyBM_jL-XJCsDfw/viewform?usp=sf_link")
         ? await launch(
