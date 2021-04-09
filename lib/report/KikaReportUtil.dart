@@ -52,7 +52,7 @@ class KikaReportUtil {
   Future<void> trackEvent(
       {String eventName, Map<String, dynamic> parameters}) async {
     if (!isReleaseMode) {
-      print(eventName +
+      print("kika:"+eventName +
           " " +
           ((parameters != null) ? parameters.toString() : ""));
       return;

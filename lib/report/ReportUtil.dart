@@ -89,7 +89,7 @@ class ReportUtil {
     KikaReportUtil.getInstance()
         .trackEvent(eventName: eventName, parameters: parameters);
     if (!isReleaseMode) {
-      print(eventName +
+      print("firbease:"+eventName +
           " " +
           ((parameters != null) ? parameters.toString() : ""));
       return;

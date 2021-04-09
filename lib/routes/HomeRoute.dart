@@ -1,6 +1,11 @@
+import 'dart:convert';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:health/PushManager.dart';
 import 'package:health/common/DailyMotionSentencesUtil.dart';
 import 'package:health/common/EventConstants.dart';
+import 'package:health/common/FeedbackUtil.dart';
 import 'package:health/common/Global.dart';
 import 'package:health/db/DbHelper.dart';
 import 'package:health/db/models/FlowModel.dart';
@@ -13,8 +18,6 @@ import 'package:health/routes/breath/BreathSource.dart';
 import 'package:health/widget/SlideVerticalWidget.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
-
 import 'selfAssessment/AssessmentEnterName.dart';
 import 'package:health/extension/ScreenExtension.dart';
 
@@ -53,6 +56,7 @@ class _HomeRouteState extends State<HomeRoute> {
   void initState() {
     super.initState();
     initData();
+    processMessage();
   }
 
   @override
@@ -128,12 +132,9 @@ class _HomeRouteState extends State<HomeRoute> {
   }
 
   void _onFeedback() async {
-    ReportUtil.getInstance().trackEvent(eventName: EventConstants.feedback_click);
-    await canLaunch(
-            "https://docs.google.com/forms/d/e/1FAIpQLScljCi90h2S95rlwvadRMQplNjPxZkqgbZCyBM_jL-XJCsDfw/viewform?usp=sf_link")
-        ? await launch(
-            "https://docs.google.com/forms/d/e/1FAIpQLScljCi90h2S95rlwvadRMQplNjPxZkqgbZCyBM_jL-XJCsDfw/viewform?usp=sf_link")
-        : {};
+    ReportUtil.getInstance()
+        .trackEvent(eventName: EventConstants.feedback_click);
+    FeedbackUtil.enterGoogleForm();
   }
 
   initData() async {
@@ -152,6 +153,13 @@ class _HomeRouteState extends State<HomeRoute> {
         });
       });
     });
+  }
+
+  processMessage() async {
+    var message = await FirebaseMessaging.instance.getInitialMessage();
+    if (message != null && message.data != null && message.data.isNotEmpty) {
+      PushManager.getInstance().onSelectNotification(json.encode(message.data));
+    }
   }
 
   Future<List<MoodCheckTable>> initFutureMoodChecks() {
