@@ -13,6 +13,7 @@ A few resources to get you started if this is your first Flutter project:
 
 - [Google Play](https://play.google.com/store/apps/details?id=com.aqua.better.life)
 - [App store](https://apps.apple.com/cn/app/aqua-calm-your-mind-and-body/id1564410552)
+
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
